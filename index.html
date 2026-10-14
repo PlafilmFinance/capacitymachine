@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capacidad productiva · Módulo de análisis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..110,400..800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --steel:#17304d; --steel2:#1f3d60; --rail:#0f2238; --blue:#2a6fdb; --ink:#1b2633; --mut:#5d6a79; --line:#dbe1e8; --line2:#eef1f5;
+  --bg:#eef1f4; --card:#fff;
+  --green:#1f8a4c; --yellow:#b88c00; --orange:#d9730d; --red:#c62828;
+  --greenbg:#e6f3eb; --yellowbg:#fbf3d6; --orangebg:#fcebd9; --redbg:#fbe4e4;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Archivo','Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:13.5px;line-height:1.45;font-variant-numeric:tabular-nums}
+a{color:var(--blue);cursor:pointer}
+.app{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+aside{background:var(--rail);color:#b9c6d6;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+.brand{padding:20px 20px 18px;border-bottom:1px solid #1d3552}
+.brand b{display:block;color:#fff;font-size:15px;font-weight:700;font-stretch:90%;letter-spacing:.01em}
+.brand span{display:block;color:#7f93ad;font-size:12px;margin-top:2px}
+nav{padding:8px 0}
+nav a{display:flex;gap:10px;align-items:center;padding:8px 20px;color:#b9c6d6;text-decoration:none;border-left:3px solid transparent;font-size:13px}
+nav a .n{font-size:11px;color:#5b7290;width:16px;text-align:right}
+nav a:hover{background:#132a44;color:#fff}
+nav a.on{background:#17324f;color:#fff;border-left-color:#5aa0f0}
+nav a.on .n{color:#8fb6ea}
+.side-foot{margin-top:auto;padding:14px 20px;font-size:11.5px;color:#6f849f;border-top:1px solid #1d3552}
+main{min-width:0}
+.top{display:flex;align-items:center;gap:14px;padding:10px 28px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.top .t1{font-weight:700;font-stretch:88%;font-size:15px;color:var(--steel)}
+.top .sp{flex:1}
+.flag{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mut);padding:4px 4px 4px 10px;border-radius:6px}
+.flag.on{background:#fff4e5;color:#8a4a00;box-shadow:inset 0 0 0 1px #f2c38d}
+.wrap{padding:22px 28px 48px;max-width:1500px}
+.vh{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.vh h2{margin:0;font-size:24px;font-weight:700;font-stretch:85%;letter-spacing:-.005em;color:var(--steel)}
+.vh p{margin:3px 0 0;color:var(--mut);font-size:13px;max-width:78ch}
+.vh-x{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+select,input{font:inherit;font-size:12.5px;padding:5px 7px;border:1px solid #c6cfda;border-radius:4px;background:#fff;color:var(--ink)}
+input[type=number]{width:84px;text-align:right}
+input:focus,select:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+input:disabled,select:disabled{background:#f3f5f8;color:#8a95a3}
+.ctl{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.btn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:4px;border:1px solid var(--steel);background:#fff;color:var(--steel);cursor:pointer}
+.btn:hover{background:#f0f4f9}
+.btn.pri{background:var(--steel);color:#fff}
+.btn.pri:hover{background:var(--steel2)}
+.btn.on{background:var(--steel);color:#fff}
+.btn.ghost{border-color:#c6cfda;color:var(--mut)}
+.xb{border:1px solid #d3dae3;background:#fff;border-radius:3px;cursor:pointer;color:var(--mut);padding:1px 7px;font-size:13px}
+.xb:hover{color:var(--red);border-color:var(--red)}
+.grid{display:grid;gap:14px;margin-bottom:14px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.g21{grid-template-columns:2fr 1fr}.g12{grid-template-columns:minmax(320px,1fr) 2fr}
+.grid.tight{gap:10px;margin:10px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin-bottom:14px;min-width:0}
+.grid>.card,.grid>div>.card:last-child{margin-bottom:0}
+.card h3{margin:0 0 12px;font-size:14px;font-weight:700;font-stretch:90%;color:var(--steel)}
+.card h4{margin:16px 0 8px;font-size:13px;color:var(--steel)}
+.card.empty{color:var(--mut);padding:28px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px 14px;border-top:3px solid #c9d3df}
+.kpi .kl{font-size:12px;color:var(--mut)}
+.kpi .kv{font-size:24px;font-weight:700;font-stretch:88%;color:var(--ink);margin:2px 0;white-space:nowrap}
+.kpi .ks{font-size:11.5px;color:var(--mut)}
+.k-green{border-top-color:var(--green)}.k-yellow{border-top-color:var(--yellow)}.k-orange{border-top-color:var(--orange)}.k-red{border-top-color:var(--red)}
+.k-red .kv{color:var(--red)}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;background:var(--steel);color:#dfe8f2;border-radius:6px;margin-bottom:14px;overflow:hidden}
+.hero-l{padding:20px 24px}
+.hl{font-size:13px;color:#9fb4cc}
+.hn{font-size:52px;font-weight:800;font-stretch:78%;line-height:1;color:#fff;margin:4px 0 14px;letter-spacing:-.01em}
+.hn small{font-size:14px;font-weight:500;font-stretch:100%;color:#9fb4cc;letter-spacing:0;margin-left:8px}
+.gauge{max-width:560px}
+.gtrack{position:relative;height:14px;background:#0d2136;border-radius:2px}
+.gtrack i{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
+.gtrack span{position:absolute;top:-3px;bottom:-3px;width:1px;background:#6f86a2}
+.gscale{position:relative;height:16px;font-size:10.5px;color:#7f97b3;margin-top:3px}
+.gscale span{position:absolute;transform:translateX(-50%)}
+.gscale span:first-child{transform:none}
+.hs{margin-top:10px;font-size:13px}
+.hero-r{background:#132a44;padding:16px 22px;display:grid;gap:10px;align-content:center}
+.hero-r div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #1f3a5a;padding-bottom:8px}
+.hero-r div:last-child{border:0;padding:0}
+.hero-r span{font-size:12px;color:#9fb4cc}
+.hero-r b{font-size:15px;color:#fff;text-align:right}
+.hero-r b.t-red{color:#ff9d8f}.hero-r b.t-green{color:#8fe0b0}
+.bg-green{background:var(--green)}.bg-yellow{background:#d9a800}.bg-orange{background:var(--orange)}.bg-red{background:var(--red)}.bg-nd{background:#aab4c0}
+.ubar{position:relative;height:8px;background:#e7ecf2;border-radius:2px;min-width:110px}
+.ubar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
+.ubar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.p-green{background:var(--greenbg);color:var(--green)}.p-yellow{background:var(--yellowbg);color:#8a6700}.p-orange{background:var(--orangebg);color:#a5530a}.p-red{background:var(--redbg);color:var(--red)}.p-nd{background:#eef1f4;color:var(--mut)}
+.t-red{color:var(--red)}.t-green{color:var(--green)}
+.tw{overflow:auto;max-width:100%}
+.tw.tall{max-height:70vh}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+.t th{text-align:left;font-weight:600;color:var(--mut);font-size:11.5px;border-bottom:1px solid var(--line);padding:7px 8px;background:#f8f9fb;position:sticky;top:0;z-index:1;white-space:nowrap}
+.t td{padding:6px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.t .num{text-align:right;white-space:nowrap}
+.t td small,.note small{color:var(--mut)}
+.t .sm{font-size:11.5px;color:var(--mut)}
+.t tr.grp td{background:#f3f6f9;font-weight:600;color:var(--steel);border-top:1px solid var(--line)}
+.t tr.grp td small{font-weight:400}
+.t td.ind{padding-left:20px}
+.t tr.hist td{color:var(--mut);background:#fafbfc}
+.t tr.row-red td:first-child{box-shadow:inset 3px 0 0 var(--red)}
+.t tr.best td{background:#eef5ff}
+.t tr.best td:first-child{box-shadow:inset 3px 0 0 var(--blue)}
+.t.kv td:first-child{color:var(--mut)}
+.t.cmp td:first-child{color:var(--mut);white-space:nowrap}
+.ed-t td{padding:4px 5px}
+.ed-t input,.ed-t select{padding:3px 5px}
+.nowrap{white-space:nowrap}
+.heat td.hc{text-align:center;font-size:11.5px;min-width:46px;padding:5px 3px}
+.h-green{background:#d6eddf;color:#185f37}.h-yellow{background:#f8e9a8;color:#6d5200}.h-orange{background:#f6c38f;color:#7a3c05}.h-red{background:#e57373;color:#fff;font-weight:700}.h-nd{background:#fafbfc}
+.alerts{display:flex;flex-direction:column;gap:6px;max-height:330px;overflow:auto}
+.al{display:flex;gap:10px;padding:8px 10px;border-radius:4px;font-size:12.5px;line-height:1.4}
+.al>span{font-size:11px;padding-top:2px}
+.al-red{background:var(--redbg)}.al-red>span{color:var(--red)}
+.al-orange{background:var(--orangebg)}.al-orange>span{color:var(--orange)}
+.al-yellow{background:var(--yellowbg)}.al-yellow>span{color:var(--yellow)}
+.al-green{background:var(--greenbg)}.al-green>span{color:var(--green)}
+.note{font-size:12px;color:var(--mut);margin:10px 0 0;max-width:120ch}
+.banner{background:#e9f1fc;border:1px solid #c3d7f3;color:#1d4d8f;padding:9px 12px;border-radius:5px;margin-bottom:14px;font-size:12.5px}
+.filters{display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
+.chw{position:relative;width:100%}
+.nochart{padding:30px;text-align:center;color:var(--mut);background:#f8f9fb;border:1px dashed var(--line);border-radius:4px;font-size:12.5px}
+.status{font-size:24px;font-weight:800;font-stretch:85%;padding:12px 16px;border-radius:5px;letter-spacing:.01em}
+.st-green{background:var(--greenbg);color:var(--green);box-shadow:inset 4px 0 0 var(--green)}
+.st-orange{background:var(--orangebg);color:#a5530a;box-shadow:inset 4px 0 0 var(--orange)}
+.st-red{background:var(--redbg);color:var(--red);box-shadow:inset 4px 0 0 var(--red)}
+.msg{font-size:14px;margin:12px 0;max-width:90ch}
+.fl{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:12.5px}
+.fl>span:first-child{width:150px;color:var(--mut);flex:none}
+.fl input[type=text],.fl select{min-width:200px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 18px}
+.fgrid .fl>span:first-child{width:130px}
+.tabs{display:flex;gap:2px;margin:-4px 0 16px;border-bottom:1px solid var(--line)}
+.tabs a{padding:8px 16px;color:var(--mut);text-decoration:none;border-bottom:2px solid transparent;font-weight:600}
+.tabs a.on{color:var(--steel);border-bottom-color:var(--steel)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--line);border-radius:14px;padding:3px 10px;font-size:12px;cursor:pointer}
+.mc{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:4px;padding:2px 7px;margin:2px;font-size:12px;cursor:pointer;background:#fafbfc}
+.mc.on{background:#e8f0fc;border-color:#9fc0ef}
+.mc.bad{background:var(--orangebg);border-color:#efb88a}
+.route-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px}
+.route-flow span{background:var(--steel);color:#fff;padding:5px 12px;border-radius:3px;font-weight:600;font-size:12.5px}
+.route-flow i{color:var(--mut);font-style:normal}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;margin-bottom:14px}
+.dcard{background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;gap:8px}
+.dcard b{display:block;color:var(--steel)}
+.dcard small{color:var(--mut);font-size:11.5px}
+.dact{display:flex;gap:8px}
+.dcard .cols{font-size:11px;color:#7a8696;line-height:1.5}
+.semdemo{display:flex;gap:6px;margin:8px 0 18px}
+.sup{margin:0;padding-left:18px;color:var(--mut);font-size:12.5px}
+.sup li{margin:3px 0}
+@media (max-width:1200px){.g4{grid-template-columns:repeat(2,1fr)}.g21,.g12,.hero{grid-template-columns:1fr}}
+@media (max-width:820px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}nav{display:flex;flex-wrap:wrap}nav a{padding:6px 12px}.side-foot{display:none}.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:16px}.hn{font-size:40px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><b>Capacidad productiva</b><span>Empaques flexibles · planta</span></div>
+    <nav id="nav"></nav>
+    <div class="side-foot">Datos demo. Reemplázalos en Datos.<br>Montos en COP.</div>
+  </aside>
+  <main>
+    <div class="top">
+      <span class="t1">Módulo de análisis de capacidad</span>
+      <span class="sp"></span>
+      <div id="scnFlag" class="flag">Escenario <select id="scnSel"></select></div>
+      <button class="btn pri" id="btnPedido">Analizar nuevo pedido</button>
+    </div>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+<script>
+/* =====================================================================
+   UTILIDADES DE PERÍODO
+   ===================================================================== */
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function monthsFrom(start, n){
+  const out=[]; let y=+start.slice(0,4), m=+start.slice(5,7);
+  for(let i=0;i<n;i++){ out.push(`${y}-${String(m).padStart(2,'0')}`); m++; if(m>12){m=1;y++;} }
+  return out;
+}
+function monthShift(ym,k){ let y=+ym.slice(0,4), m=+ym.slice(5,7)+k; while(m>12){m-=12;y++;} while(m<1){m+=12;y--;} return `${y}-${String(m).padStart(2,'0')}`; }
+function daysInMonth(ym){ return new Date(+ym.slice(0,4), +ym.slice(5,7), 0).getDate(); }
+function lab(ym){ return MESES[+ym.slice(5,7)-1]+' '+ym.slice(2,4); }
+
+/* =====================================================================
+   1. CAPA DE DATOS (DEMO) — estructuras reemplazables por datos reales
+   ===================================================================== */
+const DEMO = (()=>{
+  const processes = [
+    {id:'REF', nombre:'Refile',            unidad:'m',     tipo:'Preparación',    activo:true},
+    {id:'IMP', nombre:'Impresión',         unidad:'m',     tipo:'Transformación', activo:true},
+    {id:'LAM', nombre:'Laminado',          unidad:'m',     tipo:'Transformación', activo:true},
+    {id:'RFI', nombre:'Refile de impreso', unidad:'m',     tipo:'Conversión',     activo:true},
+    {id:'INS', nombre:'Inspección',        unidad:'m',     tipo:'Calidad',        activo:true},
+    {id:'SEL', nombre:'Sellado',           unidad:'m',     tipo:'Conversión',     activo:true},
+    {id:'PEG', nombre:'Pegado',            unidad:'m',     tipo:'Conversión',     activo:true},
+    {id:'COR', nombre:'Corte',             unidad:'golpe', tipo:'Conversión',     activo:true},
+    {id:'REB', nombre:'Rebobine',          unidad:'m',     tipo:'Conversión',     activo:true},
+  ];
+  // Calendario y tiempos estándar POR PROCESO (turnos por proceso; tiempos de cambio y de cambio de rollo)
+  const calendar = [
+    {proc:'REF', turnos:2, horasTurno:8, diasMes:26, setupH:0.33, cambioRolloMin:6,  maxHorasExtra:40, horasExtra:0},
+    {proc:'IMP', turnos:3, horasTurno:8, diasMes:26, setupH:1.50, cambioRolloMin:12, maxHorasExtra:40, horasExtra:0},
+    {proc:'LAM', turnos:2, horasTurno:8, diasMes:26, setupH:0.75, cambioRolloMin:10, maxHorasExtra:48, horasExtra:0},
+    {proc:'RFI', turnos:2, horasTurno:8, diasMes:26, setupH:0.50, cambioRolloMin:6,  maxHorasExtra:40, horasExtra:0},
+    {proc:'INS', turnos:3, horasTurno:8, diasMes:26, setupH:0.25, cambioRolloMin:5,  maxHorasExtra:40, horasExtra:0},
+    {proc:'SEL', turnos:2, horasTurno:8, diasMes:26, setupH:0.75, cambioRolloMin:8,  maxHorasExtra:40, horasExtra:0},
+    {proc:'PEG', turnos:2, horasTurno:8, diasMes:26, setupH:0.75, cambioRolloMin:8,  maxHorasExtra:40, horasExtra:0},
+    {proc:'COR', turnos:2, horasTurno:8, diasMes:26, setupH:0.50, cambioRolloMin:6,  maxHorasExtra:40, horasExtra:0},
+    {proc:'REB', turnos:2, horasTurno:8, diasMes:26, setupH:0.25, cambioRolloMin:5,  maxHorasExtra:40, horasExtra:0},
+  ];
+  // Máquinas: velocidad promedio en m/min (Corte en golpes/min); anchos en mm; diámetro máx. de rollo en mm
+  const M=(id,nombre,procesos,velocidad,anchoMin,anchoMax,diamMax,familias,eficiencia,mantH,limpH,paradasH,cambioRolloMin,fechaInicio,vidaUtil,costoHora)=>
+    ({id,nombre,procesos,velocidad,anchoMin,anchoMax,diamMax,familias,eficiencia,mantH,limpH,paradasH,cambioRolloMin,setupH:null,estado:'Activa',fechaInicio,vidaUtil,costoHora});
+  const machines = [
+    M('R01','Refiladora 1',['REF','RFI'],380,300,1350, 800,[],0.85,12,8,18,null,'2012-03',20,180000),
+    M('R02','Refiladora 2',['REF','RFI'],420,300,1350,1000,[],0.86,12,8,16,null,'2016-06',20,190000),
+    M('R03','Refiladora 3',['REF','RFI'],480,200,1600,1000,[],0.88,10,8,12,null,'2021-02',20,220000),
+    M('I01','Impresora flexo 6 col.',['IMP'],160,400,1000, 800,['Monocapa','Bolsas'],0.78,24,16,30,null,'2010-01',20,650000),
+    M('I02','Impresora flexo 8 col.',['IMP'],200,400,1250,1000,[],0.80,24,16,28,null,'2015-05',20,720000),
+    M('I03','Impresora flexo 10 col.',['IMP'],250,500,1300,1000,[],0.82,20,16,24,null,'2019-09',20,850000),
+    M('I04','Impresora flexo 8 col. CI',['IMP'],220,400,1300,1000,['Laminados','Monocapa','Pouches'],0.80,20,16,26,null,'2017-04',20,780000),
+    M('L01','Laminadora sin solvente 1',['LAM'],220,500,1300,1000,[],0.82,16,10,22,null,'2014-08',20,520000),
+    M('L02','Laminadora sin solvente 2',['LAM'],280,500,1300,1000,['Laminados','Bolsas'],0.84,16,10,18,null,'2020-11',20,600000),
+    M('IN01','Inspectora 1',['INS'],420,200,1300,1000,[],0.88,8,6,10,null,'2018-01',15,150000),
+    M('S01','Selladora 1',['SEL'],70,150,1000,800,['Bolsas','Pouches'],0.80,10,8,16,null,'2011-01',15,140000),
+    M('S02','Selladora 2',['SEL'],80,150,1000,800,['Bolsas'],0.82,10,8,14,null,'2016-01',15,150000),
+    M('S03','Selladora 3',['SEL'],90,150,1000,800,['Bolsas','Pouches'],0.84,10,8,12,null,'2022-03',15,170000),
+    M('P01','Pegadora 1',['PEG'],60,150,1000,800,['Pouches'],0.80,10,8,14,null,'2018-07',15,160000),
+    M('C01','Cortadora 1',['COR'],90,100,600,800,[],0.82,8,6,12,null,'2013-01',15,130000),
+    M('C02','Cortadora 2',['COR'],120,100,600,800,[],0.85,8,6,10,null,'2019-01',15,150000),
+    M('C03','Cortadora 3',['COR'],110,100,1000,800,['Laminados','Pouches'],0.84,8,6,10,null,'2020-01',15,150000),
+    M('RB01','Rebobinadora 1',['REB'],500,100,1000,800,[],0.86,8,6,10,null,'2015-01',15,120000),
+    M('RB02','Rebobinadora 2',['REB'],450,100,1000,800,[],0.84,8,6,12,null,'2012-01',15,110000),
+  ];
+  const customers = [
+    {id:'C01', nombre:'Alimentos del Pacífico', segmento:'Alimentos'},
+    {id:'C02', nombre:'Snacks Andinos',         segmento:'Snacks'},
+    {id:'C03', nombre:'Bebidas del Valle',      segmento:'Bebidas'},
+    {id:'C04', nombre:'Molinos Unidos',         segmento:'Granos'},
+    {id:'C05', nombre:'Hogar Limpio',           segmento:'Aseo'},
+  ];
+  // Estructura: capas con micras, densidad (g/cm³) y paso de ruta en que entran. gramajeAdic = tintas + adhesivos (g/m²)
+  const L=(material,micras,densidad,paso)=>({material,micras,densidad,paso});
+  const products = [
+    {id:'P001',descripcion:'Laminado café 250 g',        familia:'Laminados',cliente:'C01',unidadVenta:'kg',anchoWeb:1.05,pistas:2,largo:1.00,gramajeAdic:6, loteKg:6000,estado:'Activo',estructura:[L('PET',12,1.40,1),L('PE',50,0.92,3)]},
+    {id:'P002',descripcion:'Bolsa snack metalizada',     familia:'Bolsas',   cliente:'C02',unidadVenta:'kg',anchoWeb:0.90,pistas:1,largo:0.30,gramajeAdic:5, loteKg:5000,estado:'Activo',estructura:[L('BOPP',20,0.91,1),L('BOPP met',20,0.91,3)]},
+    {id:'P003',descripcion:'Etiqueta monocapa bebida',   familia:'Monocapa', cliente:'C03',unidadVenta:'kg',anchoWeb:0.80,pistas:1,largo:0.20,gramajeAdic:3, loteKg:8000,estado:'Activo',estructura:[L('BOPP',30,0.91,1)]},
+    {id:'P004',descripcion:'Pouch trilaminado',          familia:'Pouches',  cliente:'C01',unidadVenta:'kg',anchoWeb:0.95,pistas:1,largo:0.20,gramajeAdic:9, loteKg:4000,estado:'Activo',estructura:[L('PET',12,1.40,1),L('AL',7,2.71,3),L('PE',70,0.92,4)]},
+    {id:'P005',descripcion:'Lámina arroz 1 kg',          familia:'Laminados',cliente:'C04',unidadVenta:'kg',anchoWeb:1.20,pistas:2,largo:0.30,gramajeAdic:5, loteKg:9000,estado:'Activo',estructura:[L('BOPP',20,0.91,1),L('PE',40,0.92,3)]},
+    {id:'P006',descripcion:'Bolsa detergente 1 kg',      familia:'Bolsas',   cliente:'C05',unidadVenta:'kg',anchoWeb:0.85,pistas:1,largo:0.32,gramajeAdic:6, loteKg:7000,estado:'Activo',estructura:[L('PET',12,1.40,1),L('PE',80,0.92,3)]},
+    {id:'P007',descripcion:'Envoltura galleta',          familia:'Monocapa', cliente:'C02',unidadVenta:'kg',anchoWeb:1.00,pistas:2,largo:0.18,gramajeAdic:3, loteKg:6000,estado:'Activo',estructura:[L('BOPP met',25,0.91,1)]},
+    {id:'P008',descripcion:'Stand-up pouch café premium',familia:'Pouches',  cliente:'C01',unidadVenta:'kg',anchoWeb:1.00,pistas:2,largo:0.26,gramajeAdic:10,loteKg:3000,estado:'Activo',estructura:[L('PET',12,1.40,1),L('AL',9,2.71,3),L('PE',90,0.92,4)]},
+  ];
+  const routes = products.map(p=>({prod:p.id, version:1, activa:true}));
+  // Pasos de ruta: máquinas compatibles explícitas, eficiencia esperada, rendimiento (yield), setup opcional por paso
+  const S=(prod,seq,proc,maquinas,eficiencia,yld)=>({prod,seq,proc,maquinas,eficiencia,yield:yld,setupH:null,velocidades:{}});
+  const routeSteps = [
+    S('P001',1,'REF',['R01','R02'],0.86,0.995), S('P001',2,'IMP',['I02','I03'],0.80,0.97), S('P001',3,'LAM',['L01','L02'],0.83,0.985),
+    S('P001',4,'RFI',['R02','R03'],0.86,0.98),  S('P001',5,'INS',['IN01'],0.90,0.995),     S('P001',6,'COR',['C01','C02','C03'],0.85,0.98),
+    S('P002',1,'REF',['R01','R02','R03'],0.86,0.995), S('P002',2,'IMP',['I01','I02'],0.80,0.97), S('P002',3,'LAM',['L02'],0.84,0.985), S('P002',4,'SEL',['S01','S02','S03'],0.80,0.97),
+    S('P003',1,'REF',['R01','R02'],0.86,0.995), S('P003',2,'IMP',['I01','I04'],0.80,0.975), S('P003',3,'REB',['RB01','RB02'],0.86,0.99),
+    S('P004',1,'REF',['R02','R03'],0.86,0.995), S('P004',2,'IMP',['I03','I04'],0.80,0.97), S('P004',3,'LAM',['L01'],0.82,0.98),
+    S('P004',4,'LAM',['L01'],0.82,0.98),         S('P004',5,'PEG',['P01'],0.80,0.98),      S('P004',6,'COR',['C03'],0.84,0.98),
+    S('P005',1,'REF',['R02','R03'],0.86,0.995), S('P005',2,'IMP',['I02','I03','I04'],0.80,0.97), S('P005',3,'LAM',['L01','L02'],0.83,0.985),
+    S('P005',4,'RFI',['R02','R03'],0.86,0.98),  S('P005',5,'REB',['RB01'],0.86,0.99),
+    S('P006',1,'REF',['R01','R02'],0.86,0.995), S('P006',2,'IMP',['I01','I02'],0.80,0.97), S('P006',3,'LAM',['L01','L02'],0.83,0.985), S('P006',4,'SEL',['S01','S02','S03'],0.80,0.97),
+    S('P007',1,'REF',['R01','R02','R03'],0.86,0.995), S('P007',2,'IMP',['I02','I04'],0.80,0.975), S('P007',3,'RFI',['R01','R02'],0.86,0.98),
+    S('P007',4,'INS',['IN01'],0.90,0.995),      S('P007',5,'REB',['RB01','RB02'],0.86,0.99),
+    S('P008',1,'REF',['R03'],0.86,0.995), S('P008',2,'IMP',['I03'],0.80,0.97), S('P008',3,'LAM',['L01'],0.82,0.98), S('P008',4,'LAM',['L01'],0.82,0.98),
+    S('P008',5,'RFI',['R03'],0.86,0.98),  S('P008',6,'INS',['IN01'],0.90,0.995), S('P008',7,'SEL',['S01','S03'],0.80,0.97),
+  ];
+  const margins = [ // margen de contribución por kg (COP), incluye arancel; no incluye fletes ni comisiones
+    {prod:'P001',margenKg:4200,precioKg:15800},{prod:'P002',margenKg:3600,precioKg:13900},
+    {prod:'P003',margenKg:2400,precioKg:11200},{prod:'P004',margenKg:6900,precioKg:24500},
+    {prod:'P005',margenKg:2600,precioKg:10800},{prod:'P006',margenKg:3000,precioKg:12200},
+    {prod:'P007',margenKg:2800,precioKg:12600},{prod:'P008',margenKg:8200,precioKg:28900},
+  ];
+  // Demanda base mensual (kg) para generar demo
+  const base = {P001:95000,P002:70000,P003:85000,P004:22000,P005:90000,P006:75000,P007:65000,P008:16000};
+  const season = {1:.92,2:.96,3:1,4:1,5:1.03,6:1.02,7:1.04,8:1.05,9:1.06,10:1,11:1.07,12:1.14};
+  const mesInicio='2026-10';
+  const demand=[], production=[];
+  monthsFrom(mesInicio,12).forEach((ym,i)=>{
+    const mo=+ym.slice(5);
+    Object.keys(base).forEach(p=>{
+      const kg=Math.round(base[p]*season[mo]*Math.pow(1.022,i)/100)*100;
+      const conf = i===0?0.85 : i===1?0.55 : i===2?0.25 : 0;
+      if(conf>0) demand.push({prod:p,mes:ym,tipo:'Confirmado',kg:Math.round(kg*conf)});
+      demand.push({prod:p,mes:ym,tipo:'Forecast',kg:Math.round(kg*(1-conf))});
+      demand.push({prod:p,mes:ym,tipo:'Presupuesto',kg:Math.round(kg*1.05/100)*100});
+    });
+  });
+  monthsFrom('2026-04',6).forEach((ym,j)=>{
+    const mo=+ym.slice(5);
+    Object.keys(base).forEach((p,k)=>{
+      const kg=Math.round(base[p]*season[mo]*(0.90+0.012*j)/100)*100;
+      demand.push({prod:p,mes:ym,tipo:'Histórico',kg});
+      production.push({prod:p,mes:ym,kg:Math.round(kg*(0.94+((k*7+j*3)%5)/100))});
+    });
+  });
+  const downtime = [ // ajustes mensuales puntuales a paros (sobrescriben el estándar de la máquina)
+    {machine:'L02',mes:'2027-02',mant:90,limp:10,paradas:18},
+    {machine:'I03',mes:'2026-12',mant:60,limp:16,paradas:24},
+  ];
+  const capex = [
+    {id:'A',nombre:'Mejora de eficiencia en Laminado (SMED + capacitación)',tipo:'eficiencia',proceso:'LAM',param:6,maquinaId:'',clonDe:'',velocidad:'',fecha:'',inversion:180e6,opexAnual:40e6,vida:5},
+    {id:'B',nombre:'Tercer turno en Laminado',tipo:'turno',proceso:'LAM',param:1,maquinaId:'',clonDe:'',velocidad:'',fecha:'',inversion:25e6,opexAnual:420e6,vida:5},
+    {id:'C',nombre:'Horas extra en Laminado',tipo:'horasExtra',proceso:'LAM',param:48,maquinaId:'',clonDe:'',velocidad:'',fecha:'',inversion:0,opexAnual:null,vida:1},
+    {id:'D',nombre:'Nueva laminadora L03',tipo:'maquina',proceso:'LAM',param:'',maquinaId:'L03',clonDe:'L01',velocidad:300,fecha:'2027-01',inversion:4800e6,opexAnual:380e6,vida:12},
+    {id:'E',nombre:'Nueva impresora I05',tipo:'maquina',proceso:'IMP',param:'',maquinaId:'I05',clonDe:'I03',velocidad:300,fecha:'2027-01',inversion:6500e6,opexAnual:520e6,vida:15},
+  ];
+  const scenarios = [
+    {id:'base', nombre:'Base', fijo:true},
+    {id:'ef',   nombre:'+ Eficiencia', efPP:5},
+    {id:'turno',nombre:'+ Turno', cal:{LAM:{turnos:3}}},
+    {id:'hx',   nombre:'+ Horas extra', cal:{LAM:{horasExtra:48}, IMP:{horasExtra:20}}},
+    {id:'maq',  nombre:'+ Nueva máquina', nuevas:[{id:'L03',clonDe:'L01',velocidad:300,fecha:'2027-01'}]},
+  ];
+  const cfg = {
+    sem:{amarillo:0.80, naranja:0.90, rojo:1.00},
+    effSource:'ruta',            // 'maquina' | 'ruta' | 'combinada'  (pendiente de confirmar)
+    politica:'balanceo',         // 'balanceo' | 'preferente'
+    chunks:24, diamCore:152,
+    tiposDemanda:['Confirmado','Forecast'],
+    fechaCorte:'2026-10-07', mesInicio:mesInicio, horizonte:12,
+    tasaDescuento:0.15,          // DEMO — por confirmar
+    recargoHoraExtra:0.25,       // DEMO — por confirmar
+    minDisponibilidad:0.88,
+  };
+  return { data:{processes,calendar,machines,customers,products,routes,routeSteps,margins,demand,production,downtime,capex}, scenarios, cfg };
+})();
+
+/* =====================================================================
+   2. MOTOR DE CÁLCULO — funciones puras: (datos, configuración) → resultados
+   ===================================================================== */
+const Engine = (()=>{
+  const W = new WeakMap();
+  const invalidate = db => W.delete(db);
+  function ix(db){
+    let x=W.get(db); if(x) return x;
+    x={proc:{},cal:{},mach:{},prod:{},cust:{},marg:{},down:{},steps:{}};
+    db.processes.forEach(p=>x.proc[p.id]=p);
+    db.calendar.forEach(c=>x.cal[c.proc]=c);
+    db.machines.forEach(m=>x.mach[m.id]=m);
+    db.products.forEach(p=>x.prod[p.id]=p);
+    db.customers.forEach(c=>x.cust[c.id]=c);
+    db.margins.forEach(m=>x.marg[m.prod]=m);
+    db.downtime.forEach(d=>x.down[d.machine+'|'+d.mes]=d);
+    db.routeSteps.forEach(s=>{(x.steps[s.prod]=x.steps[s.prod]||[]).push(s);});
+    Object.values(x.steps).forEach(a=>a.sort((a,b)=>a.seq-b.seq));
+    W.set(db,x); return x;
+  }
+  const nz = v => v!==null && v!=='' && v!==undefined && !isNaN(+v);
+  const margin = (db,pid)=> +(ix(db).marg[pid]?.margenKg||0);
+  const price  = (db,pid)=> +(ix(db).marg[pid]?.precioKg||0);
+  const gramaje = p => p.estructura.reduce((s,l)=>s+l.micras*l.densidad,0)+(+p.gramajeAdic||0);
+  function calibreAt(p,seq){ const c=p.estructura.filter(l=>l.paso<=seq).reduce((s,l)=>s+(+l.micras),0); return c || (+p.estructura[0]?.micras||20); }
+
+  // Explosión de la ruta: metros por kg de producto terminado en cada paso (mermas en cascada y pistas tras refile de impreso)
+  function factors(db,p){
+    const steps=ix(db).steps[p.id]||[]; const g=gramaje(p);
+    const mpk = 1000/(g*p.anchoWeb);
+    const iR = steps.findIndex(s=>s.proc==='RFI');
+    const out=new Array(steps.length); let cum=1;
+    for(let i=steps.length-1;i>=0;i--){
+      cum *= (+steps[i].yield||1);
+      const after = iR>=0 && i>iR; const pis = after ? (+p.pistas||1) : 1;
+      out[i] = { step:steps[i], mPerKg: mpk*pis/cum, calibre: calibreAt(p,steps[i].seq),
+                 anchoMm: (p.anchoWeb*1000)/pis, yieldAcum: cum };
+    }
+    return out;
+  }
+  function reasons(db,p,f,m){
+    const r=[]; if(!m) return ['Máquina inexistente'];
+    if(!m.procesos.includes(f.step.proc)) r.push('No ejecuta este proceso');
+    if(m.estado!=='Activa') r.push('Máquina inactiva');
+    if(f.anchoMm < m.anchoMin || f.anchoMm > m.anchoMax) r.push(`Ancho ${Math.round(f.anchoMm)} mm fuera de ${m.anchoMin}–${m.anchoMax} mm`);
+    if(m.familias && m.familias.length && !m.familias.includes(p.familia)) r.push(`No procesa ${p.familia}`);
+    return r;
+  }
+  const eff = (cfg,m,s)=>{ const a=+m.eficiencia||1, b=+s.eficiencia||1;
+    return cfg.effSource==='maquina'?a : cfg.effSource==='ruta'?b : a*b; };
+  const speed = (m,s)=> (s.velocidades && nz(s.velocidades[m.id])) ? +s.velocidades[m.id] : +m.velocidad;
+  function rollLen(cfg,m,cal){ const D=m.diamMax/1000, d=cfg.diamCore/1000, t=cal*1e-6; return Math.max(1, Math.PI*(D*D-d*d)/(4*t)); }
+  function setupH(db,m,s){ if(nz(s.setupH)) return +s.setupH; if(nz(m.setupH)) return +m.setupH; return +(ix(db).cal[s.proc]?.setupH||0); }
+  function rollMin(db,m,s){ return nz(m.cambioRolloMin) ? +m.cambioRolloMin : +(ix(db).cal[s.proc]?.cambioRolloMin||0); }
+  function perKg(db,cfg,p,f,m){
+    const pr=ix(db).proc[f.step.proc];
+    const v=speed(m,f.step)*60, e=eff(cfg,m,f.step);
+    const golpe = pr && pr.unidad==='golpe';
+    const q = golpe ? f.mPerKg/(+p.largo||0.25) : f.mPerKg;
+    const hProc = q/(v*e);
+    const rl = rollLen(cfg,m,f.calibre);
+    const hRoll = f.mPerKg/rl * rollMin(db,m,f.step)/60;
+    return {hProc,hRoll,qty:q,rollLen:rl,unidad:golpe?'golpes':'m'};
+  }
+  // Fracción del volumen del producto que pasa por el paso (1 = todo; p. ej. 0,28 si solo el 28 % pasa por INS-VENUS)
+  const frac = s=> nz(s.fraccion) ? Math.max(0,Math.min(1,+s.fraccion)) : 1;
+  const runs = (p,kg)=> kg>0 ? Math.ceil(kg/(+p.loteKg||kg)) : 0;
+  function options(db,cfg,p,f,kg){
+    const x=ix(db), n=runs(p,kg);
+    return (f.step.maquinas||[]).map(id=>x.mach[id]).filter(m=>m && reasons(db,p,f,m).length===0).map(m=>{
+      const fr=frac(f.step), k=perKg(db,cfg,p,f,m), s=n*setupH(db,m,f.step)*fr;
+      return {m:m.id, hProc:kg*k.hProc*fr, hRoll:kg*k.hRoll*fr, hSetup:s, h:kg*(k.hProc+k.hRoll)*fr+s, qty:kg*k.qty*fr, hPerKg:(k.hProc+k.hRoll)*fr};
+    });
+  }
+  // Capacidad de una máquina en un mes (horas). Calendario del primer proceso de la máquina.
+  function cap(db,m,ym){
+    const x=ix(db), c=x.cal[m.procesos[0]]||{turnos:0,horasTurno:0,diasMes:0};
+    const d=x.down[m.id+'|'+ym];
+    const mant=d?+d.mant:+m.mantH||0, limp=d?+d.limp:+m.limpH||0, par=d?+d.paradas:+m.paradasH||0;
+    const enOper = !m.fechaInicio || m.fechaInicio.slice(0,7) <= ym;
+    const act = (m.estado==='Activa' && enOper) ? 1 : 0;
+    const teor = c.turnos*c.horasTurno*c.diasMes;
+    const paros = mant+limp+par;
+    const extra = +c.horasExtra||0;
+    const disp = act*(Math.max(0,teor-paros)+extra);
+    return {inst:act*24*daysInMonth(ym), teor:act*teor, mant, limp, par, paros:act*paros, extra:act*extra, disp,
+            disponibilidad: teor? Math.max(0,teor-paros)/teor : 0};
+  }
+  function demandBy(db,ym,tipos){ const o={}; db.demand.forEach(r=>{ if(r.mes===ym && tipos.includes(r.tipo)) o[r.prod]=(o[r.prod]||0)+(+r.kg); }); return o; }
+
+  function mph(db,r,pid){ const bp=r.load.byProd[pid]; if(!bp||bp.h<=0) return null; const kg=Math.max(...Object.values(bp.kg)); return margin(db,pid)*kg/bp.h; }
+  function kgThrough(r,pid){ const bp=r.load.byProd[pid]; return bp? Math.max(...Object.values(bp.kg)) : 0; }
+
+  function lostSales(db,mres,dem,th){
+    const lostKg={};
+    mres.forEach(r=>{
+      if(!(r.util>th) || r.load.h<=0) return;
+      let ex=r.load.h-r.cap.disp;
+      const ps=Object.keys(r.load.byProd).map(pid=>({pid,v:mph(db,r,pid),h:r.load.byProd[pid].h,kg:kgThrough(r,pid)})).sort((a,b)=>a.v-b.v);
+      for(const q of ps){ if(ex<=0) break; const rem=Math.min(q.h,ex); const kgL=q.kg*rem/q.h; lostKg[q.pid]=Math.max(lostKg[q.pid]||0,kgL); ex-=rem; }
+    });
+    let kg=0,mg=0,vt=0;
+    for(const pid in lostKg){ const v=Math.min(lostKg[pid],dem[pid]||0); lostKg[pid]=v; kg+=v; mg+=v*margin(db,pid); vt+=v*price(db,pid); }
+    return {byProd:lostKg,kg,margen:mg,ventas:vt};
+  }
+
+  function runMonth(db,cfg,ym,opt={}){
+    const x=ix(db), tipos=opt.tipos||cfg.tiposDemanda;
+    const dem = opt.demand || demandBy(db,ym,tipos);
+    const caps={}, loads={};
+    db.machines.forEach(m=>{ caps[m.id]=cap(db,m,ym); loads[m.id]={h:0,hProc:0,hRoll:0,hSetup:0,byProd:{},byProc:{}}; });
+    const tasks=[], issues=[]; let demKg=0, margen=0, ventas=0;
+    for(const pid in dem){
+      const p=x.prod[pid], kg=+dem[pid];
+      if(!p || !(kg>0) || p.estado!=='Activo') continue;
+      demKg+=kg; margen+=kg*margin(db,pid); ventas+=kg*price(db,pid);
+      factors(db,p).forEach(f=>{
+        const op=options(db,cfg,p,f,kg);
+        if(!op.length){ issues.push({prod:pid,seq:f.step.seq,proc:f.step.proc,msg:'Sin máquina compatible activa'}); return; }
+        tasks.push({pid,kg,f,op});
+      });
+    }
+    const pol=opt.politica||cfg.politica, N=cfg.chunks||24;
+    tasks.sort((a,b)=>a.op.length-b.op.length || b.op[0].h-a.op[0].h);
+    const add=(t,o,fr)=>{ const L=loads[o.m];
+      L.h+=o.h*fr; L.hProc+=o.hProc*fr; L.hRoll+=o.hRoll*fr; L.hSetup+=o.hSetup*fr;
+      const bp=L.byProd[t.pid]||(L.byProd[t.pid]={h:0,kg:{}});
+      bp.h+=o.h*fr; bp.kg[t.f.step.seq]=(bp.kg[t.f.step.seq]||0)+t.kg*fr;
+      L.byProc[t.f.step.proc]=(L.byProc[t.f.step.proc]||0)+o.h*fr; };
+    tasks.forEach(t=>{
+      if(pol==='preferente' || t.op.length===1){ add(t,t.op[0],1); return; }
+      for(let k=0;k<N;k++){
+        let best=null, bu=Infinity;
+        t.op.forEach(o=>{ const c=caps[o.m].disp; const u=c>0?(loads[o.m].h+o.h/N)/c:Infinity; if(u<bu){bu=u;best=o;} });
+        add(t,best||t.op[0],1/N);
+      }
+    });
+    const mres=db.machines.map(m=>{ const L=loads[m.id], C=caps[m.id];
+      const util=C.disp>0?L.h/C.disp:(L.h>0?Infinity:0);
+      return {id:m.id,m,cap:C,load:L,util,libre:C.disp-L.h}; });
+    const pools=db.processes.filter(p=>p.activo).map(p=>{
+      const ms=mres.filter(r=>r.m.procesos.includes(p.id));
+      const disp=ms.reduce((s,r)=>s+r.cap.disp,0), h=ms.reduce((s,r)=>s+r.load.h,0);
+      const hProcOnly=ms.reduce((s,r)=>s+(r.load.byProc[p.id]||0),0);
+      return {id:p.id,p,machines:ms.map(r=>r.id),disp,h,hProcOnly,util:disp>0?h/disp:(h>0?Infinity:0)}; });
+    const ranked=[...mres].filter(r=>r.load.h>0).sort((a,b)=>b.util-a.util);
+    const bn=ranked[0]||null, maxU=bn?bn.util:0;
+    const capKg = maxU>0 && isFinite(maxU) ? demKg/maxU : null;
+    const lost=lostSales(db,mres,dem,cfg.sem.rojo);
+    return {ym,dem,demKg,margen,ventas,mres,pools,ranked,bn,maxU,capKg,lost,issues};
+  }
+
+  function run(db,cfg,opt={}){
+    const months = opt.months || monthsFrom(cfg.mesInicio,cfg.horizonte);
+    const res = months.map(ym=>runMonth(db,cfg,ym,opt));
+    const th=cfg.sem.rojo;
+    const sr=res.find(r=>r.maxU>th);
+    const sp=res.find(r=>r.pools.some(p=>p.util>th));
+    let satProceso=null; if(sp){ const pmax=[...sp.pools].sort((a,b)=>b.util-a.util)[0]; satProceso={ym:sp.ym,id:pmax.id,u:pmax.util}; }
+    return {months:res, satRecurso: sr?{ym:sr.ym,id:sr.bn.id,u:sr.maxU}:null, satProceso};
+  }
+
+  /* ---------- Escenarios: overrides sobre una copia de los datos ---------- */
+  function applyScenario(base,s,cfg){
+    const db=structuredClone(base);
+    if(!s) return db;
+    if(nz(s.demandaPct) && +s.demandaPct!==0) db.demand.forEach(r=>{ if(r.tipo!=='Histórico') r.kg=r.kg*(1+s.demandaPct/100); });
+    if(s.mixOn && s.mix){
+      const sh=s.mix, tot=Object.values(sh).reduce((a,b)=>a+(+b||0),0);
+      if(tot>0){
+        const keys=new Set(db.demand.filter(r=>r.tipo!=='Histórico').map(r=>r.mes+'|'+r.tipo));
+        keys.forEach(k=>{ const [mes,tipo]=k.split('|'); const rows=db.demand.filter(r=>r.mes===mes&&r.tipo===tipo);
+          const T=rows.reduce((a,r)=>a+r.kg,0); const old={}; rows.forEach(r=>old[r.prod]=(old[r.prod]||0)+r.kg);
+          Object.keys(sh).forEach(pid=>{ const nk=T*(+sh[pid]||0)/tot;
+            if(old[pid]>0) rows.filter(r=>r.prod===pid).forEach(r=>r.kg=r.kg*nk/old[pid]);
+            else if(nk>0) db.demand.push({prod:pid,mes,tipo,kg:nk}); });
+          rows.filter(r=>!(r.prod in sh)).forEach(r=>r.kg=0);
+        });
+      }
+    }
+    if(s.cal) Object.entries(s.cal).forEach(([proc,v])=>{ const c=db.calendar.find(c=>c.proc===proc); if(!c) return;
+      Object.entries(v).forEach(([k,val])=>{ if(nz(val)) c[k]=+val; });
+      if(c.turnos*c.horasTurno>24) c.turnos=Math.floor(24/c.horasTurno); });
+    const src = cfg?.effSource||'ruta';
+    const dPP = proc => ((+s.efPP||0) + (+(s.efProc?.[proc])||0))/100;
+    if(nz(s.efPP) || s.efProc){
+      if(src!=='ruta') db.machines.forEach(m=>{ m.eficiencia=Math.min(0.99,(+m.eficiencia)+dPP(m.procesos[0])); });
+      if(src!=='maquina') db.routeSteps.forEach(st=>{ st.eficiencia=Math.min(0.99,(+st.eficiencia)+dPP(st.proc)); });
+    }
+    if(nz(s.velPct) && +s.velPct!==0){ db.machines.forEach(m=>m.velocidad*=1+s.velPct/100);
+      db.routeSteps.forEach(st=>Object.keys(st.velocidades||{}).forEach(k=>{ if(nz(st.velocidades[k])) st.velocidades[k]*=1+s.velPct/100; })); }
+    if(nz(s.paradasPct) && +s.paradasPct!==0){ db.machines.forEach(m=>m.paradasH*=1-s.paradasPct/100); db.downtime.forEach(d=>d.paradas*=1-s.paradasPct/100); }
+    if(nz(s.setupPct) && +s.setupPct!==0){ const f=1+s.setupPct/100; db.calendar.forEach(c=>c.setupH*=f);
+      db.machines.forEach(m=>{ if(nz(m.setupH)) m.setupH*=f; }); db.routeSteps.forEach(st=>{ if(nz(st.setupH)) st.setupH*=f; }); }
+    (s.nuevas||[]).forEach(n=>{ if(!n||!n.id||!n.clonDe) return; const src=db.machines.find(m=>m.id===n.clonDe); if(!src||db.machines.some(m=>m.id===n.id)) return;
+      const nm=structuredClone(src); nm.id=n.id; nm.nombre=n.nombre||('Nueva '+src.nombre.toLowerCase()); nm.fechaInicio=n.fecha||''; nm.familias=[];
+      if(nz(n.velocidad)) nm.velocidad=+n.velocidad; db.machines.push(nm);
+      db.routeSteps.forEach(st=>{ if(st.maquinas.includes(src.id) && !st.maquinas.includes(n.id)) st.maquinas.push(n.id); }); });
+    return db;
+  }
+
+  /* ---------- Aceptación de pedidos ---------- */
+  function windowMonths(fromDate,toDate){
+    const a=new Date(fromDate+'T00:00:00'), b=new Date(toDate+'T00:00:00'); if(isNaN(b)||b<a) return [];
+    const out=[]; let y=a.getFullYear(), mo=a.getMonth();
+    while(y<b.getFullYear() || (y===b.getFullYear() && mo<=b.getMonth())){
+      const dim=new Date(y,mo+1,0).getDate();
+      const s=(y===a.getFullYear()&&mo===a.getMonth())?a.getDate():1;
+      const e=(y===b.getFullYear()&&mo===b.getMonth())?b.getDate():dim;
+      out.push({ym:`${y}-${String(mo+1).padStart(2,'0')}`,frac:(e-s+1)/dim});
+      mo++; if(mo>11){mo=0;y++;}
+    }
+    return out;
+  }
+  function freeHours(db,cfg,win,tipos){
+    const free={}, ot={}, cache={};
+    db.machines.forEach(m=>{free[m.id]=0; ot[m.id]=0;});
+    win.forEach(w=>{ const r=cache[w.ym]||(cache[w.ym]=runMonth(db,cfg,w.ym,{tipos}));
+      r.mres.forEach(x=>{ free[x.id]+=w.frac*Math.max(0,x.cap.disp-x.load.h);
+        const c=ix(db).cal[x.m.procesos[0]]; ot[x.id]+= x.cap.disp>0 ? w.frac*(+c?.maxHorasExtra||0) : 0; }); });
+    return {free,ot};
+  }
+  function allocOrder(db,cfg,p,kg,avail){
+    const fs=factors(db,p), rem={...avail}, steps=[]; let ok=true;
+    fs.forEach(fx=>{
+      const op=options(db,cfg,p,fx,kg), pr=ix(db).proc[fx.step.proc];
+      if(!op.length){ ok=false; steps.push({step:fx.step,proc:pr,noCompat:true,req:0,disp:0,asign:{},short:Infinity,op}); return; }
+      const ms=[...new Set(op.map(o=>o.m))];
+      const dispBefore=ms.reduce((s,m)=>s+Math.max(0,rem[m]),0);
+      const asign={}, N=20;
+      for(let k=0;k<N;k++){ let best=null,bv=-Infinity;
+        op.forEach(o=>{ const v=rem[o.m]-o.h/N; if(v>bv){bv=v;best=o;} });
+        rem[best.m]-=best.h/N; asign[best.m]=(asign[best.m]||0)+best.h/N; }
+      let req=0, short=0; Object.keys(asign).forEach(m=>{ req+=asign[m]; short+=Math.min(asign[m],Math.max(0,-rem[m])); });
+      if(short>1e-6) ok=false;
+      steps.push({step:fx.step,proc:pr,req,disp:dispBefore,asign,short,op});
+    });
+    return {ok,steps,rem};
+  }
+  function lastDay(ym){ return `${ym}-${String(daysInMonth(ym)).padStart(2,'0')}`; }
+  function evaluateOrder(db,cfg,o){
+    const p=ix(db).prod[o.prod];
+    if(!p) return {error:'Producto no encontrado.'};
+    if(!(o.kg>0)) return {error:'Ingresa una cantidad mayor que cero.'};
+    const win=windowMonths(cfg.fechaCorte,o.fecha);
+    if(!win.length) return {error:'La fecha requerida es anterior a la fecha de corte del modelo ('+cfg.fechaCorte+').'};
+    const tipos=o.incluirForecast?['Confirmado','Forecast']:['Confirmado'];
+    const {free,ot}=freeHours(db,cfg,win,tipos);
+    const base=allocOrder(db,cfg,p,o.kg,free);
+    const res={p,o,win,free,ot,base,margen:o.kg*margin(db,p.id),ventas:o.kg*price(db,p.id),maxKg:o.kg};
+    const nc=base.steps.find(s=>s.noCompat);
+    if(nc){ res.estado='NO ACEPTABLE'; res.motivo=`El paso ${nc.step.seq} (${nc.proc?.nombre||nc.step.proc}) no tiene máquinas compatibles activas.`; return res; }
+    if(base.ok){ res.estado='ACEPTABLE'; }
+    else{
+      let lo=0,hi=o.kg; for(let i=0;i<28;i++){ const mid=(lo+hi)/2; if(allocOrder(db,cfg,p,mid,free).ok) lo=mid; else hi=mid; }
+      res.maxKg=lo;
+      const withOT={}; for(const k in free) withOT[k]=free[k]+ot[k];
+      const r2=allocOrder(db,cfg,p,o.kg,withOT);
+      if(r2.ok){
+        const extra={}; let costo=0, hx=0;
+        for(const k in free){ const used=withOT[k]-r2.rem[k]; const e=Math.max(0,used-free[k]); if(e>1e-6){ extra[k]=e; hx+=e; costo+=e*(+ix(db).mach[k].costoHora||0)*(1+cfg.recargoHoraExtra); } }
+        res.estado='ACEPTABLE CON RESTRICCIONES'; res.palanca='horasExtra'; res.extra=extra; res.horasExtra=hx; res.costoExtra=costo; res.alloc=r2;
+      } else if(lo > o.kg*0.02){
+        res.estado='ACEPTABLE CON RESTRICCIONES'; res.palanca='parcial';
+      } else res.estado='NO ACEPTABLE';
+      if(res.palanca!=='horasExtra'){
+        const fm=o.fecha.slice(0,7);
+        for(let k=0;k<=12;k++){ const ym=monthShift(fm,k); const end=lastDay(ym); if(end<=o.fecha) continue;
+          const w2=windowMonths(cfg.fechaCorte,end); const fh=freeHours(db,cfg,w2,tipos);
+          if(allocOrder(db,cfg,p,o.kg,fh.free).ok){ res.fechaCompleta=end; break; } }
+      }
+    }
+    // recurso limitante
+    const src = res.alloc || base;
+    let lim=null, limScore=-Infinity;
+    src.steps.forEach(st=>Object.keys(st.asign).forEach(m=>{
+      const av = (res.palanca==='horasExtra'? free[m]+ot[m] : free[m]);
+      const score = st.short>0 ? 1e9+st.short : (av>0? st.asign[m]/av : 1e9);
+      if(score>limScore){ limScore=score; lim={m,step:st,h:st.asign[m],av}; } }));
+    res.limitante=lim;
+    if(lim){ const hOnLim = src.steps.reduce((s,st)=>s+(st.asign[lim.m]||0),0); res.hLim=hOnLim; res.mphLim = hOnLim>0? res.margen/hOnLim : null; }
+    return res;
+  }
+
+  /* ---------- CAPEX ---------- */
+  function capexScenario(base,a){
+    switch(a.tipo){
+      case 'eficiencia': return {efProc:{[a.proceso]:+a.param||0}};
+      case 'turno': { const c=base.calendar.find(c=>c.proc===a.proceso)||{turnos:0}; return {cal:{[a.proceso]:{turnos:(+c.turnos)+(+a.param||1)}}}; }
+      case 'horasExtra': return {cal:{[a.proceso]:{horasExtra:+a.param||0}}};
+      case 'maquina': return {nuevas:[{id:a.maquinaId||('N'+a.id),clonDe:a.clonDe,velocidad:a.velocidad,fecha:a.fecha}]};
+    }
+    return {};
+  }
+  function npv(r,flows){ return flows.reduce((s,f,t)=>s+f/Math.pow(1+r,t),0); }
+  function irr(flows){ if(!(flows[0]<0) || !flows.slice(1).some(f=>f>0)) return null;
+    let lo=-0.99,hi=10; if(npv(hi,flows)>0) return null;
+    for(let i=0;i<100;i++){ const mid=(lo+hi)/2; if(npv(mid,flows)>0) lo=mid; else hi=mid; } return (lo+hi)/2; }
+  function evalCapex(base,cfg,a,baseRun){
+    const db=applyScenario(base,capexScenario(base,a),cfg); invalidate(db);
+    const r=run(db,cfg);
+    const served = run_ => run_.months.reduce((s,m)=>s+m.margen-m.lost.margen,0);
+    const servedKg = run_ => run_.months.reduce((s,m)=>s+m.demKg-m.lost.kg,0);
+    const servedV = run_ => run_.months.reduce((s,m)=>s+m.ventas-m.lost.ventas,0);
+    const incr=served(r)-served(baseRun), kgIncr=servedKg(r)-servedKg(baseRun), vIncr=servedV(r)-servedV(baseRun);
+    let capH=0;
+    r.months.forEach((m,i)=>{ const b=baseRun.months[i];
+      m.mres.filter(x=>x.m.procesos.includes(a.proceso)).forEach(x=>{ const bx=b.mres.find(y=>y.id===x.id); capH+=x.cap.disp-(bx?bx.cap.disp:0); }); });
+    const capKg = r.months.reduce((s,m,i)=>s+((m.capKg||0)-(baseRun.months[i].capKg||0)),0);
+    let opex=+a.opexAnual||0, opexAuto=false;
+    if(a.tipo==='horasExtra' && !nz(a.opexAnual)){ opexAuto=true; opex=0;
+      r.months.forEach(m=>m.mres.forEach(x=>{ if(!x.m.procesos.includes(a.proceso)) return;
+        const used=Math.max(0,Math.min(x.cap.extra, x.load.h-(x.cap.disp-x.cap.extra)));
+        opex+=used*(+x.m.costoHora||0)*(1+cfg.recargoHoraExtra); })); }
+    const ebitda=incr-opex, inv=+a.inversion||0, vida=Math.max(1,+a.vida||1);
+    const flows=[-inv, ...Array(vida).fill(ebitda)];
+    const payback = ebitda>0 ? inv/ebitda : null;
+    const peak=[...r.months].sort((x,y)=>y.maxU-x.maxU)[0];
+    return {a,capH,capKg,kgIncr,ventasIncr:vIncr,margenIncr:incr,opex,opexAuto,ebitda,payback,
+            roi: inv>0? ebitda/inv : null, roiVida: inv>0? (ebitda*vida-inv)/inv : null,
+            vpn:npv(cfg.tasaDescuento,flows), tir:inv>0?irr(flows):null,
+            sigCuello: peak&&peak.bn? {id:peak.bn.id,u:peak.maxU,ym:peak.ym}:null, run:r};
+  }
+
+  return {invalidate,ix,margin,price,gramaje,calibreAt,factors,reasons,perKg,options,cap,setupH,runs,eff,speed,
+          demandBy,runMonth,run,applyScenario,evaluateOrder,windowMonths,capexScenario,evalCapex,mph,kgThrough};
+})();
+
+
+</script>
+<script>
+/* =====================================================================
+   3. ESTADO DE LA APLICACIÓN
+   ===================================================================== */
+const STORE_KEY='capprod_v1';
+let DB, CFG, SCN, R;
+const UI={view:'resumen', mes:null, scnActivo:'base',
+  f:{proc:'',maq:'',fam:'',prod:'',cli:'',gran:'mes'},
+  ruta:'P001', scnEdit:'ef', compare:['base','ef','turno','hx','maq'], simTab:'esc',
+  pedido:{cli:'',prod:'P001',cant:30000,unidad:'kg',fecha:'2026-10-31',forecast:false}, pedidoRes:null,
+  mix:null, bnSel:'', demBase:'plan', importMsg:''};
+
+function loadState(){
+  try{ const s=localStorage.getItem(STORE_KEY); if(s){ const o=JSON.parse(s); DB=o.DB; CFG=o.CFG; SCN=o.SCN; } }catch(e){}
+  if(!DB||!CFG||!SCN){ DB=structuredClone(DEMO.data); CFG=structuredClone(DEMO.cfg); SCN=structuredClone(DEMO.scenarios); }
+}
+function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify({DB,CFG,SCN})); }catch(e){} }
+const months=()=>monthsFrom(CFG.mesInicio,CFG.horizonte);
+const scnById=id=>SCN.find(s=>s.id===id);
+function dbFor(s){ return (!s||s.id==='base') ? DB : Engine.applyScenario(DB,s,CFG); }
+
+function recalc(){
+  Engine.invalidate(DB);
+  const db=dbFor(scnById(UI.scnActivo)); Engine.invalidate(db);
+  const pot={cal:{}}; db.calendar.forEach(c=>pot.cal[c.proc]={turnos:Math.floor(24/(c.horasTurno||8)),horasExtra:c.maxHorasExtra});
+  const dbPot=Engine.applyScenario(db,pot,CFG);
+  R={db, bal:Engine.run(db,CFG), pref:Engine.run(db,{...CFG,politica:'preferente'}), pot:Engine.run(dbPot,CFG), capex:null, pres:null};
+  if(!UI.mes || !months().includes(UI.mes)) UI.mes=months()[0];
+  saveState();
+}
+function capexResults(){
+  if(!R.capex) R.capex=DB.capex.map(a=>{ try{ return Engine.evalCapex(R.db,CFG,a,R.bal); }catch(e){ return {a,err:e.message}; } });
+  return R.capex;
+}
+
+/* =====================================================================
+   4. FORMATO Y COMPONENTES
+   ===================================================================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(n,d=0)=>(n==null||!isFinite(n))?'—':(+n).toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=(x,d=1)=>(x==null||!isFinite(x))?(x===Infinity?'∞':'—'):fmt(x*100,d)+' %';
+const ton=(kg,d=1)=>kg==null?'—':fmt(kg/1000,d)+' t';
+const mm=n=>n==null||!isFinite(n)?'—':'$ '+fmt(n/1e6,1)+' M';
+const cop=n=>n==null||!isFinite(n)?'—':'$ '+fmt(n,0);
+const sum=(a,f)=>a.reduce((s,x)=>s+(f?f(x):x),0);
+const avg=a=>a.length?sum(a)/a.length:0;
+const pName=id=>Engine.ix(R.db).proc[id]?.nombre||id;
+const mProcs=m=>m.procesos.map(pName).join(' / ');
+function sem(u){ const t=CFG.sem; if(u==null) return 'nd'; if(!isFinite(u)||u>t.rojo) return 'red'; if(u>=t.naranja) return 'orange'; if(u>=t.amarillo) return 'yellow'; return 'green'; }
+const semTxt={red:'Excedido',orange:'Crítico',yellow:'Alerta',green:'Disponible',nd:'—'};
+function ubar(u){ const c=sem(u); const w=Math.min(isFinite(u)?u:1.3,1.3)/1.3*100;
+  return `<div class="ubar" title="${pct(u)}"><i class="bg-${c}" style="width:${w}%"></i><b style="left:${100/1.3}%"></b></div>`; }
+const pill=(c,t)=>`<span class="pill p-${c}">${esc(t)}</span>`;
+function kpi(l,v,s,c='',big=false){ return `<div class="kpi ${c?'k-'+c:''} ${big?'big':''}"><div class="kl">${l}</div><div class="kv">${v}</div>${s?`<div class="ks">${s}</div>`:''}</div>`; }
+const curM=()=>R.bal.months.find(m=>m.ym===UI.mes)||R.bal.months[0];
+function opts(list,sel,blank){ return (blank!=null?`<option value="">${blank}</option>`:'')+list.map(([v,t])=>`<option value="${esc(v)}" ${String(v)===String(sel)?'selected':''}>${esc(t)}</option>`).join(''); }
+function inp(path,val,type='num',w){ const v=type==='pct'?(val==null||val===''?'':+(+val*100).toFixed(2)):(Array.isArray(val)?val.join('|'):(val??''));
+  return `<input class="ed" data-edit="${path}:${type}" type="${type==='num'||type==='pct'?'number':'text'}" step="any" value="${esc(v)}" ${w?`style="width:${w}px"`:''}>`; }
+
+/* ---------- Clasificación de restricciones y valor de la hora ---------- */
+function classify(ym,id){
+  const mb=R.bal.months.find(x=>x.ym===ym), mp=R.pref.months.find(x=>x.ym===ym);
+  const rb=mb.mres.find(r=>r.id===id), rp=mp?.mres.find(r=>r.id===id); const t=CFG.sem;
+  if(!rb) return {t:'—',c:'nd'};
+  if(rb.util>t.rojo){ const pu=Math.max(...mb.pools.filter(p=>rb.m.procesos.includes(p.id)).map(p=>p.util));
+    return pu>t.rojo?{t:'Estructural',c:'red',d:'El proceso completo supera su capacidad.'}:{t:'Por compatibilidad',c:'red',d:'El proceso tiene holgura, pero los productos solo pueden ir a esta máquina.'}; }
+  if(rp && rp.util>t.rojo) return {t:'Por asignación',c:'orange',d:'Se satura con la máquina preferente; el balanceo la resuelve.'};
+  if(rb.util>=t.naranja) return {t:'Próximo a saturación',c:'orange'};
+  if(rb.util>=t.amarillo) return {t:'En alerta',c:'yellow'};
+  return {t:'Con holgura',c:'green'};
+}
+function valorHora(m,id){
+  const r=m.mres.find(x=>x.id===id); if(!r) return null;
+  const rows=Object.keys(r.load.byProd).map(pid=>{ const kg=Engine.kgThrough(r,pid), h=r.load.byProd[pid].h, mc=kg*Engine.margin(R.db,pid);
+    return {pid,p:Engine.ix(R.db).prod[pid],kg,h,mc,mph:h>0?mc/h:null,mkg:Engine.margin(R.db,pid)}; }).sort((a,b)=>b.mph-a.mph);
+  const H=sum(rows,x=>x.h), MC=sum(rows,x=>x.mc);
+  return {r,rows,prom:H>0?MC/H:null,marginal:rows.length?rows[rows.length-1].mph:null,mejor:rows[0]};
+}
+
+/* ---------- Alertas ---------- */
+function buildAlerts(){
+  const out=[], t=CFG.sem, ms=R.bal.months, m=curM();
+  R.db.machines.forEach(mc=>{
+    const red=ms.find(x=>{const r=x.mres.find(y=>y.id===mc.id);return r.load.h>0&&r.util>t.rojo;});
+    if(red){ const r=red.mres.find(y=>y.id===mc.id); out.push({c:'red',o:0,txt:`${mc.id} (${mProcs(mc)}) alcanzará ${pct(r.util,0)} de utilización en ${lab(red.ym)}: requiere ${fmt(r.load.h-r.cap.disp)} h adicionales.`}); return; }
+    const or=ms.find(x=>{const r=x.mres.find(y=>y.id===mc.id);return r.util>=t.naranja;});
+    if(or){ const r=or.mres.find(y=>y.id===mc.id); out.push({c:'orange',o:1,txt:`${mc.id} (${mProcs(mc)}) llega a ${pct(r.util,0)} en ${lab(or.ym)}: quedan ${fmt(r.libre)} h libres.`}); }
+  });
+  m.mres.forEach(r=>{ if(r.cap.teor>0 && r.cap.disponibilidad<CFG.minDisponibilidad) out.push({c:'yellow',o:2,txt:`${r.id} tiene disponibilidad de ${pct(r.cap.disponibilidad,0)} en ${lab(m.ym)} (${fmt(r.cap.paros)} h de mantenimiento, limpieza y paradas).`}); });
+  m.issues.forEach(i=>out.push({c:'red',o:0,txt:`${i.prod} paso ${i.seq} (${pName(i.proc)}): ${i.msg}. Esa demanda no se está cargando.`}));
+  [...m.mres].filter(r=>r.cap.disp>0).sort((a,b)=>b.libre-a.libre).slice(0,3).forEach(r=>out.push({c:'green',o:3,txt:`Hay ${fmt(r.libre)} h disponibles en ${r.id} (${mProcs(r.m)}) en ${lab(m.ym)}.`}));
+  return out.sort((a,b)=>a.o-b.o);
+}
+const ICON={red:'■',orange:'▲',yellow:'●',green:'✓'};
+const alertHtml=a=>`<div class="al al-${a.c}"><span>${ICON[a.c]}</span><div>${esc(a.txt)}</div></div>`;
+
+/* ---------- Gráficos ---------- */
+const CH={}; let AFTER=[];
+const COL={navy:'#17304d',blue:'#2a6fdb',sky:'#8fb6ea',grey:'#a9b4c2',green:'#1f8a4c',yellow:'#c79a00',orange:'#d9730d',red:'#c62828',ink:'#1b2633'};
+const semCol=u=>({red:COL.red,orange:COL.orange,yellow:COL.yellow,green:COL.green,nd:COL.grey})[sem(u)];
+function chart(id,cfg){ AFTER.push(()=>{ const el=document.getElementById(id); if(!el) return;
+  if(!window.Chart){ el.outerHTML='<div class="nochart">Los gráficos requieren conexión a internet (Chart.js). Los cálculos y tablas funcionan sin conexión.</div>'; return; }
+  if(CH[id]) CH[id].destroy();
+  Chart.defaults.font.family="'Archivo', 'Segoe UI', sans-serif"; Chart.defaults.font.size=11; Chart.defaults.color='#4d5a69';
+  cfg.options=Object.assign({responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}}},cfg.options||{});
+  CH[id]=new Chart(el,cfg); }); }
+const canvas=(id,h=260)=>`<div class="chw" style="height:${h}px"><canvas id="${id}"></canvas></div>`;
+const pctAxis={ticks:{callback:v=>v+' %'}};
+
+/* =====================================================================
+   5. VISTAS
+   ===================================================================== */
+function head(t,sub,extra=''){ return `<div class="vh"><div><h2>${t}</h2>${sub?`<p>${sub}</p>`:''}</div><div class="vh-x">${extra}</div></div>`; }
+const monthSel=()=>`<label class="ctl">Mes <select data-ui="mes">${opts(months().map(y=>[y,lab(y)]),UI.mes)}</select></label>`;
+
+/* ---------- 1. Resumen ejecutivo ---------- */
+function vResumen(){
+  const m=curM(), t=CFG.sem, bn=m.bn;
+  const hDisp=sum(m.mres,r=>r.cap.disp), hReq=sum(m.mres,r=>r.load.h);
+  const crit=m.mres.filter(r=>r.load.h>0&&r.util>=t.naranja);
+  const free=m.capKg!=null?m.capKg-m.demKg:null;
+  const pm=R.pot.months.find(x=>x.ym===m.ym), add=pm&&pm.capKg&&m.capKg?pm.capKg-m.capKg:null;
+  const conf=sum(Object.entries(Engine.demandBy(R.db,m.ym,['Confirmado'])),e=>e[1]);
+  const vh=bn?valorHora(m,bn.id):null, cl=bn?classify(m.ym,bn.id):null;
+  const prodMes=[...new Set(DB.production.map(p=>p.mes))].sort().pop();
+  const prodKg=sum(DB.production.filter(p=>p.mes===prodMes),p=>p.kg);
+  const histKg=sum(DB.demand.filter(d=>d.mes===prodMes&&d.tipo==='Histórico'),d=>d.kg);
+  const sr=R.bal.satRecurso, sp=R.bal.satProceso;
+  const lostKg=sum(R.bal.months,x=>x.lost.kg), lostMg=sum(R.bal.months,x=>x.lost.margen), lostV=sum(R.bal.months,x=>x.lost.ventas);
+  const reqH=sum(R.bal.months,x=>sum(x.mres,r=>Math.max(0,r.load.h-r.cap.disp)));
+  const restr=new Set(); R.bal.months.forEach(x=>x.mres.forEach(r=>{if(r.load.h>0&&r.util>t.rojo) restr.add(r.id);}));
+  const bnH=bn?bn.load.h:0;
+  const cap=R.capex; const best=cap?cap.filter(c=>!c.err).sort((a,b)=>b.vpn-a.vpn)[0]:null;
+  const u=m.maxU;
+  const gauge=`<div class="gauge"><div class="gtrack">${[t.amarillo,t.naranja,t.rojo].map(v=>`<span style="left:${v/1.3*100}%"></span>`).join('')}<i class="bg-${sem(u)}" style="width:${Math.min(u,1.3)/1.3*100}%"></i></div><div class="gscale"><span>0</span><span style="left:${t.amarillo/1.3*100}%">${pct(t.amarillo,0)}</span><span style="left:${t.naranja/1.3*100}%">${pct(t.naranja,0)}</span><span style="left:${t.rojo/1.3*100}%">${pct(t.rojo,0)}</span></div></div>`;
+  const ms=R.bal.months;
+  chart('chCapDem',{type:'bar',data:{labels:ms.map(x=>lab(x.ym)),datasets:[
+    {type:'line',label:'Capacidad efectiva (t)',data:ms.map(x=>x.capKg/1000),borderColor:COL.navy,backgroundColor:COL.navy,borderWidth:2,pointRadius:2,tension:.2},
+    {label:'Demanda (t)',data:ms.map(x=>x.demKg/1000),backgroundColor:ms.map(x=>x.maxU>t.rojo?COL.red:x.maxU>=t.naranja?COL.orange:COL.sky)}]},
+    options:{scales:{y:{beginAtZero:true,title:{display:true,text:'toneladas / mes'}}}}});
+  const top=[...m.mres].filter(r=>r.load.h>0).sort((a,b)=>b.util-a.util).slice(0,10);
+  chart('chTop',{type:'bar',data:{labels:top.map(r=>r.id),datasets:[{label:'Utilización',data:top.map(r=>r.util*100),backgroundColor:top.map(r=>semCol(r.util))}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{...pctAxis,beginAtZero:true,suggestedMax:110}}}});
+  const al=buildAlerts();
+  return head('Resumen ejecutivo',`Escenario ${esc(scnById(UI.scnActivo)?.nombre||'Base')} · capacidad expresada como throughput del mix demandado`,monthSel())+`
+  <section class="hero">
+    <div class="hero-l">
+      <div class="hl">Recurso que limita la planta en ${lab(m.ym)}</div>
+      <div class="hn">${bn?esc(bn.id):'—'} <small>${bn?esc(bn.m.nombre)+' · '+esc(mProcs(bn.m)):''}</small></div>
+      ${gauge}
+      <div class="hs">${bn?`Utilización ${pct(u)} · ${fmt(bn.load.h)} h requeridas de ${fmt(bn.cap.disp)} h disponibles · ${pill(cl.c,cl.t)}`:''}</div>
+    </div>
+    <div class="hero-r">
+      <div><span>Valor promedio de la hora del cuello</span><b>${vh?cop(vh.prom):'—'}</b></div>
+      <div><span>Valor marginal (producto menos rentable por hora)</span><b>${vh?cop(vh.marginal):'—'}</b></div>
+      <div><span>Saturación proyectada · recurso</span><b class="${sr?'t-red':'t-green'}">${sr?lab(sr.ym)+' · '+sr.id:'Sin saturación en el horizonte'}</b></div>
+      <div><span>Saturación proyectada · proceso</span><b class="${sp?'t-red':'t-green'}">${sp?lab(sp.ym)+' · '+pName(sp.id):'Sin saturación en el horizonte'}</b></div>
+    </div>
+  </section>
+  <div class="grid g4">
+    ${kpi('Capacidad efectiva',ton(m.capKg),'Toneladas/mes con el mix actual')}
+    ${kpi('Demanda',ton(m.demKg),`Confirmado ${ton(conf)} · resto forecast`)}
+    ${kpi('Utilización del recurso limitante',pct(u),`Promedio de la planta ${pct(hReq/hDisp)}`,sem(u))}
+    ${kpi(free>=0?'Capacidad disponible':'Déficit de capacidad',ton(Math.abs(free)),free>=0?'Volumen adicional del mismo mix':'Demanda que no se puede producir',free>=0?'green':'red')}
+    ${kpi('Horas disponibles',fmt(hDisp)+' h',`${m.mres.filter(r=>r.cap.disp>0).length} máquinas activas`)}
+    ${kpi('Horas comprometidas',fmt(hReq)+' h',`Libres ${fmt(hDisp-hReq)} h en toda la planta`)}
+    ${kpi('Recursos críticos',crit.length,crit.length?crit.map(r=>r.id).join(', '):`Ninguno ≥ ${pct(t.naranja,0)}`,crit.length?'orange':'green')}
+    ${kpi('Capacidad adicional potencial',add!=null?'+'+ton(add):'—','Con 3 turnos y horas extra máximas en todos los procesos')}
+  </div>
+  <div class="grid g21">
+    <div class="card"><h3>Capacidad efectiva vs demanda</h3>${canvas('chCapDem',280)}<p class="note">Barras en naranja o rojo: meses en que el recurso limitante supera ${pct(t.naranja,0)} o ${pct(t.rojo,0)}.</p></div>
+    <div class="card"><h3>Alertas</h3><div class="alerts">${al.slice(0,10).map(alertHtml).join('')||'<p class="note">Sin alertas.</p>'}</div>${al.length>10?`<p class="note">${al.length-10} alertas más en Cuellos de botella.</p>`:''}</div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Utilización por máquina · ${lab(m.ym)}</h3>${canvas('chTop',280)}</div>
+    <div class="card"><h3>Indicadores estratégicos · horizonte de ${CFG.horizonte} meses</h3>
+      <table class="t kv">
+        <tr><td>Producción real ${prodMes?lab(prodMes):''}</td><td class="num">${ton(prodKg)} <small>(${pct(histKg?prodKg/histKg:null,0)} de la demanda)</small></td></tr>
+        <tr><td>Recursos con capacidad restringida (&gt;${pct(t.rojo,0)})</td><td class="num">${restr.size} ${restr.size?'<small>('+[...restr].join(', ')+')</small>':''}</td></tr>
+        <tr><td>Horas del cuello en ${lab(m.ym)}</td><td class="num">${fmt(bnH)} h</td></tr>
+        <tr><td>Capacidad adicional requerida</td><td class="num">${fmt(reqH)} h-máquina</td></tr>
+        <tr><td>Volumen no atendible por capacidad</td><td class="num">${ton(lostKg)}</td></tr>
+        <tr><td>Ventas potenciales perdidas</td><td class="num t-red">${mm(lostV)}</td></tr>
+        <tr><td>Margen de contribución potencial perdido</td><td class="num t-red">${mm(lostMg)}</td></tr>
+        <tr><td>Mejor alternativa de expansión (VPN)</td><td class="num">${best?esc(best.a.nombre):`<a data-act="calcCapex">Calcular</a>`}</td></tr>
+        <tr><td>CAPEX y payback de esa alternativa</td><td class="num">${best?mm(best.a.inversion)+' · '+(best.payback==null?'no recupera':best.payback<0.01?'inmediato':fmt(best.payback,1)+' años'):'—'}</td></tr>
+      </table></div>
+  </div>`;
+}
+
+/* ---------- 2. Capacidad ---------- */
+function prodFilterSet(){ const f=UI.f; if(!f.fam&&!f.prod&&!f.cli) return null;
+  return new Set(R.db.products.filter(p=>(!f.fam||p.familia===f.fam)&&(!f.cli||p.cliente===f.cli)&&(!f.prod||p.id===f.prod)).map(p=>p.id)); }
+function aggMachines(ms,set){
+  const o={};
+  ms.forEach(mo=>mo.mres.forEach(r=>{ const a=o[r.id]||(o[r.id]={r,m:r.m,teor:0,paros:0,extra:0,disp:0,h:0,hProc:0,hSetup:0,hRoll:0,kg:0,mc:0});
+    a.teor+=r.cap.teor; a.paros+=r.cap.paros; a.extra+=r.cap.extra; a.disp+=r.cap.disp;
+    const pids=Object.keys(r.load.byProd).filter(p=>!set||set.has(p));
+    const hp=sum(pids,p=>r.load.byProd[p].h); a.h+=hp;
+    const k=r.load.h>0?hp/r.load.h:0; a.hProc+=r.load.hProc*k; a.hSetup+=r.load.hSetup*k; a.hRoll+=r.load.hRoll*k;
+    pids.forEach(p=>{ const kg=Engine.kgThrough(r,p); a.kg+=kg; a.mc+=kg*Engine.margin(R.db,p); }); }));
+  return o;
+}
+function vCapacidad(){
+  const f=UI.f, set=prodFilterSet();
+  const ms = f.gran==='anio'? R.bal.months : [curM()];
+  const agg=aggMachines(ms,set);
+  const cal=Engine.ix(R.db).cal;
+  const scale=m=>{ if(f.gran==='dia') return 1/(cal[m.procesos[0]]?.diasMes||26); if(f.gran==='semana') return 12/52; return 1; };
+  const procs=R.db.processes.filter(p=>p.activo&&(!f.proc||p.id===f.proc));
+  const unitLbl={dia:'día',semana:'semana',mes:'mes',anio:'año'}[f.gran];
+  let rows='';
+  procs.forEach(p=>{
+    const mlist=R.db.machines.filter(m=>m.procesos.includes(p.id)&&(!f.maq||m.id===f.maq)); if(!mlist.length) return;
+    const A=mlist.map(m=>agg[m.id]); const sc=scale(mlist[0]);
+    const disp=sum(A,a=>a.disp)*sc, h=sum(A,a=>a.h)*sc, u=disp>0?h/disp:null;
+    const shared=mlist.some(m=>m.procesos.length>1);
+    rows+=`<tr class="grp"><td colspan="2">${esc(p.nombre)} <small>${p.unidad==='golpe'?'golpes/min':'m/min'}${shared?' · máquinas compartidas con otro proceso: la carga incluye ambos':''}</small></td>
+      <td class="num">${fmt(sum(A,a=>a.teor)*sc)}</td><td class="num">${fmt(sum(A,a=>a.paros)*sc)}</td><td class="num">${fmt(disp)}</td><td class="num">${fmt(h)}</td><td></td><td class="num ${disp-h<0?'t-red':''}">${fmt(disp-h)}</td><td>${ubar(u)}</td><td class="num">${pct(u)}</td><td></td><td></td></tr>`;
+    mlist.forEach(m=>{ const a=agg[m.id], s=scale(m), uu=a.disp>0?a.h/a.disp:(a.h>0?Infinity:null);
+      const capKg=a.h>0?a.kg/a.h*a.disp:null;
+      rows+=`<tr><td class="ind"><b>${m.id}</b> ${esc(m.nombre)}</td><td>${fmt(m.velocidad)} ${p.unidad==='golpe'?'g/min':'m/min'}</td>
+        <td class="num">${fmt(a.teor*s)}</td><td class="num">${fmt(a.paros*s)}</td><td class="num">${fmt(a.disp*s)}</td><td class="num">${fmt(a.h*s)}</td>
+        <td class="num sm">${fmt(a.hProc*s)} / ${fmt(a.hSetup*s)} / ${fmt(a.hRoll*s)}</td>
+        <td class="num ${a.disp-a.h<0?'t-red':''}">${fmt((a.disp-a.h)*s)}</td><td>${ubar(uu)}</td><td class="num">${pct(uu)}</td>
+        <td class="num">${capKg!=null?ton(capKg*s):'—'}</td><td class="num">${a.h>0?cop(a.mc/a.h):'—'}</td></tr>`; });
+  });
+  const ML=R.db.machines.filter(m=>(!f.proc||m.procesos.includes(f.proc))&&(!f.maq||m.id===f.maq));
+  chart('chHrs',{type:'bar',data:{labels:ML.map(m=>m.id),datasets:[
+    {label:'Horas disponibles',data:ML.map(m=>agg[m.id].disp*scale(m)),backgroundColor:'#c9d6e6'},
+    {label:'Horas requeridas',data:ML.map(m=>agg[m.id].h*scale(m)),backgroundColor:ML.map(m=>semCol(agg[m.id].disp>0?agg[m.id].h/agg[m.id].disp:Infinity))}]},
+    options:{scales:{y:{beginAtZero:true,title:{display:true,text:'horas / '+unitLbl}}}}});
+  const pools=procs.map(p=>{const ml=R.db.machines.filter(m=>m.procesos.includes(p.id)); const d=sum(ml,m=>agg[m.id].disp), h=sum(ml,m=>agg[m.id].h); return {p,u:d>0?h/d:0};});
+  chart('chProc',{type:'bar',data:{labels:pools.map(x=>x.p.nombre),datasets:[{label:'Utilización del proceso',data:pools.map(x=>x.u*100),backgroundColor:pools.map(x=>semCol(x.u))}]},
+    options:{plugins:{legend:{display:false}},scales:{y:{...pctAxis,beginAtZero:true,suggestedMax:110}}}});
+  const P=R.db.products, fams=[...new Set(P.map(p=>p.familia))];
+  const filt=`<div class="filters">
+    ${f.gran!=='anio'?monthSel():''}
+    <label class="ctl">Vista <select data-ui="f.gran">${opts([['dia','Día'],['semana','Semana'],['mes','Mes'],['anio','Año (horizonte)']],f.gran)}</select></label>
+    <label class="ctl">Proceso <select data-ui="f.proc">${opts(R.db.processes.map(p=>[p.id,p.nombre]),f.proc,'Todos')}</select></label>
+    <label class="ctl">Máquina <select data-ui="f.maq">${opts(R.db.machines.filter(m=>!f.proc||m.procesos.includes(f.proc)).map(m=>[m.id,m.id]),f.maq,'Todas')}</select></label>
+    <label class="ctl">Familia <select data-ui="f.fam">${opts(fams.map(x=>[x,x]),f.fam,'Todas')}</select></label>
+    <label class="ctl">Cliente <select data-ui="f.cli">${opts(R.db.customers.map(c=>[c.id,c.nombre]),f.cli,'Todos')}</select></label>
+    <label class="ctl">Producto <select data-ui="f.prod">${opts(P.map(p=>[p.id,p.id+' '+p.descripcion]),f.prod,'Todos')}</select></label>
+  </div>`;
+  return head('Capacidad','Horas disponibles frente a horas requeridas por proceso y máquina')+filt+
+  (set?`<div class="banner">Filtro de demanda activo: las horas requeridas muestran solo la carga de ${set.size} producto(s); la capacidad sigue siendo la total de cada máquina.</div>`:'')+
+  `<div class="card"><div class="tw"><table class="t">
+    <thead><tr><th>Proceso / máquina</th><th>Velocidad</th><th class="num">H teóricas</th><th class="num">Paros</th><th class="num">H disponibles</th><th class="num">H requeridas</th><th class="num">Proceso / setup / rollos</th><th class="num">H libres</th><th>Utilización</th><th class="num"></th><th class="num">Cap. efectiva (mix)</th><th class="num">Margen / h</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="note">Paros = mantenimiento presupuestado + limpiezas + paradas no programadas. Capacidad efectiva en toneladas de producto terminado según el mix que pasa por cada máquina. Por ${unitLbl}.</p></div>
+  <div class="grid g2"><div class="card"><h3>Horas disponibles vs requeridas</h3>${canvas('chHrs',300)}</div><div class="card"><h3>Utilización por proceso</h3>${canvas('chProc',300)}</div></div>`;
+}
+
+/* ---------- 3. Demanda ---------- */
+function vDemanda(){
+  const t=CFG.sem, ms=R.bal.months;
+  if(UI.demBase==='pres' && !R.pres) R.pres=Engine.run(R.db,{...CFG,tiposDemanda:['Presupuesto']});
+  const run=UI.demBase==='pres'?R.pres:R.bal;
+  const dsum=(ym,tp)=>sum(R.db.demand.filter(d=>d.mes===ym&&d.tipo===tp),d=>+d.kg);
+  const hist=[...new Set(DB.demand.filter(d=>d.tipo==='Histórico').map(d=>d.mes))].sort();
+  let rows=hist.map(ym=>{ const h=dsum(ym,'Histórico'), p=sum(DB.production.filter(x=>x.mes===ym),x=>x.kg);
+    return `<tr class="hist"><td>${lab(ym)}</td><td colspan="2" class="note">Histórico</td><td class="num">${ton(h)}</td><td class="num">—</td><td class="num">${ton(p)} <small>producido</small></td><td class="num">${pct(h?p/h:null,0)} <small>cumpl.</small></td><td></td></tr>`; }).join('');
+  rows+=run.months.map(m=>{ const c=dsum(m.ym,'Confirmado'), fc=dsum(m.ym,'Forecast'), pr=dsum(m.ym,'Presupuesto'); const gap=m.capKg!=null?m.capKg-m.demKg:null;
+    return `<tr class="${m.maxU>t.rojo?'row-red':''}"><td><b>${lab(m.ym)}</b></td><td class="num">${ton(c)}</td><td class="num">${ton(fc)}</td><td class="num"><b>${ton(m.demKg)}</b></td><td class="num">${ton(pr)}</td><td class="num">${ton(m.capKg)}</td>
+      <td class="num">${pill(sem(m.maxU),pct(m.maxU,0))}</td><td class="num ${gap<0?'t-red':'t-green'}"><b>${gap==null?'—':(gap>=0?'+':'−')+ton(Math.abs(gap))}</b>${m.lost.kg>0?`<br><small>no atendible ${ton(m.lost.kg)}</small>`:''}</td></tr>`; }).join('');
+  // Curva de saturación
+  const m=curM(); const fx=[]; for(let k=70;k<=150;k+=5) fx.push(k);
+  const demBase=Engine.demandBy(R.db,m.ym,CFG.tiposDemanda);
+  const curve=fx.map(k=>{ const d={}; for(const p in demBase) d[p]=demBase[p]*k/100; const r=Engine.runMonth(R.db,CFG,m.ym,{demand:d}); return {k,u:r.maxU,bn:r.bn?.id}; });
+  const satK=curve.find(c=>c.u>t.rojo);
+  chart('chDem',{type:'bar',data:{labels:run.months.map(x=>lab(x.ym)),datasets:[
+    {type:'line',label:'Capacidad efectiva',data:run.months.map(x=>x.capKg/1000),borderColor:COL.navy,borderWidth:2,pointRadius:2},
+    {type:'line',label:'Presupuesto',data:run.months.map(x=>dsum(x.ym,'Presupuesto')/1000),borderColor:COL.grey,borderDash:[4,4],borderWidth:1.5,pointRadius:0},
+    {label:'Confirmado',data:run.months.map(x=>dsum(x.ym,'Confirmado')/1000),backgroundColor:COL.navy+'cc',stack:'d'},
+    {label:'Forecast',data:run.months.map(x=>dsum(x.ym,'Forecast')/1000),backgroundColor:COL.sky,stack:'d'}]},
+    options:{scales:{x:{stacked:true},y:{stacked:false,beginAtZero:true,title:{display:true,text:'toneladas'}}}}});
+  chart('chSat',{type:'line',data:{labels:curve.map(c=>c.k+' %'),datasets:[
+    {label:'Utilización del recurso limitante',data:curve.map(c=>c.u*100),borderColor:COL.blue,backgroundColor:COL.blue,pointRadius:3,
+      pointBackgroundColor:curve.map(c=>semCol(c.u))},
+    {label:'Límite',data:curve.map(()=>t.rojo*100),borderColor:COL.red,borderDash:[5,4],pointRadius:0,borderWidth:1}]},
+    options:{scales:{y:{...pctAxis},x:{title:{display:true,text:'Demanda de '+lab(m.ym)+' (100 % = plan actual)'}}},
+      plugins:{tooltip:{callbacks:{afterLabel:c=>c.datasetIndex===0?'Cuello: '+curve[c.dataIndex].bn:''}}}}});
+  chart('chEvo',{type:'line',data:{labels:ms.map(x=>lab(x.ym)),datasets:R.db.processes.filter(p=>p.activo).map((p,i)=>({label:p.nombre,data:ms.map(x=>x.pools.find(q=>q.id===p.id).util*100),borderWidth:1.6,pointRadius:0,
+    borderColor:['#17304d','#2a6fdb','#c62828','#7a8ea6','#1f8a4c','#d9730d','#8a5cc2','#c79a00','#3fa7a3'][i%9]}))},options:{scales:{y:pctAxis}}});
+  return head('Demanda','Plan mensual frente a capacidad efectiva, con el déficit visible mes a mes',
+    `<label class="ctl">Demanda base <select data-ui="demBase">${opts([['plan','Plan (confirmado + forecast)'],['pres','Presupuesto']],UI.demBase)}</select></label>`)+`
+  <div class="card"><div class="tw"><table class="t">
+    <thead><tr><th>Mes</th><th class="num">Confirmado</th><th class="num">Forecast</th><th class="num">Demanda</th><th class="num">Presupuesto</th><th class="num">Capacidad</th><th class="num">Utilización</th><th class="num">Gap</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="note">${UI.demBase==='pres'?'Capacidad y utilización calculadas con la demanda de presupuesto.':'Capacidad y utilización calculadas con confirmado + forecast.'} La capacidad en toneladas depende del mix de cada mes: si el mix cambia, cambia la capacidad.</p></div>
+  <div class="grid g2">
+    <div class="card"><h3>Demanda por tipo vs capacidad</h3>${canvas('chDem',290)}</div>
+    <div class="card"><h3>Curva de saturación · ${lab(m.ym)}</h3>${canvas('chSat',250)}
+      <p class="note">${satK?`Con el mix de ${lab(m.ym)}, la planta satura al ${satK.k} % de la demanda planeada (recurso ${satK.bn}).`:'La planta no satura ni con 150 % de la demanda de este mes.'}</p></div>
+  </div>
+  <div class="card"><h3>Evolución mensual de utilización por proceso</h3>${canvas('chEvo',260)}</div>`;
+}
+
+/* ---------- 4. Cuellos de botella ---------- */
+function vCuellos(){
+  const m=curM(), t=CFG.sem, ms=R.bal.months;
+  const rows=[...m.mres].filter(r=>r.cap.disp>0||r.load.h>0).sort((a,b)=>b.util-a.util).map((r,i)=>{
+    const rp=R.pref.months.find(x=>x.ym===m.ym).mres.find(x=>x.id===r.id);
+    const pu=Math.max(...m.pools.filter(p=>r.m.procesos.includes(p.id)).map(p=>p.util));
+    const cl=classify(m.ym,r.id); const nRed=ms.filter(x=>x.mres.find(y=>y.id===r.id).util>t.rojo).length;
+    return `<tr><td class="num">${i+1}</td><td><b>${r.id}</b> <small>${esc(mProcs(r.m))}</small></td><td>${ubar(r.util)}</td><td class="num">${pct(r.util)}</td><td class="num">${pct(rp.util,0)}</td><td class="num">${pct(pu,0)}</td>
+      <td>${pill(cl.c,cl.t)}</td><td class="num ${r.libre<0?'t-red':''}">${fmt(r.libre)}</td><td class="num">${nRed||'—'}</td></tr>`; }).join('');
+  const heat=R.db.machines.map(mc=>`<tr><td><b>${mc.id}</b></td>${ms.map(x=>{const r=x.mres.find(y=>y.id===mc.id); const u=r.load.h>0||r.cap.disp>0?r.util:null;
+    return `<td class="hc h-${u==null?'nd':sem(u)}" title="${mc.id} ${lab(x.ym)}: ${pct(u)}">${u==null?'':fmt(u*100,0)}</td>`;}).join('')}</tr>`).join('');
+  const sel=UI.bnSel||m.bn?.id; const vh=sel?valorHora(m,sel):null;
+  const vrows=vh?vh.rows.map((x,i)=>`<tr><td class="num">${i+1}</td><td><b>${x.pid}</b> ${esc(x.p.descripcion)}</td><td class="num">${cop(x.mkg)}</td><td class="num">${ton(x.kg)}</td><td class="num">${fmt(x.h,1)}</td><td class="num">${mm(x.mc)}</td><td class="num"><b>${cop(x.mph)}</b></td></tr>`).join(''):'';
+  const lost=ms.filter(x=>x.lost.kg>0);
+  return head('Cuellos de botella','Restricciones reales considerando mix, ruta, compatibilidad, setups y capacidad comprometida',monthSel())+`
+  <div class="card"><h3>Ranking de recursos · ${lab(m.ym)}</h3><div class="tw"><table class="t">
+    <thead><tr><th class="num">#</th><th>Máquina</th><th>Utilización</th><th class="num">Balanceo</th><th class="num">Solo preferente</th><th class="num">Proceso (pool)</th><th>Tipo de restricción</th><th class="num">H libres</th><th class="num">Meses &gt;${pct(t.rojo,0)}</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="note">Estructural: el proceso completo está saturado. Por compatibilidad: el proceso tiene holgura pero la máquina no se puede descargar porque los productos solo corren en ella. Por asignación: se satura solo si se carga todo a la máquina preferente.</p></div>
+  <div class="card"><h3>Mapa de utilización · máquina × mes (%)</h3><div class="tw"><table class="t heat"><thead><tr><th></th>${ms.map(x=>`<th class="num">${lab(x.ym)}</th>`).join('')}</tr></thead><tbody>${heat}</tbody></table></div></div>
+  <div class="grid g21">
+    <div class="card"><h3>Margen de contribución por hora del recurso</h3>
+      <div class="filters"><label class="ctl">Recurso <select data-ui="bnSel">${opts(m.ranked.map(r=>[r.id,r.id+' · '+pct(r.util,0)]),sel)}</select></label></div>
+      ${vh?`<div class="grid g3 tight">${kpi('Valor promedio de la hora',cop(vh.prom),'Margen total ÷ horas del recurso')}${kpi('Valor marginal de la hora',cop(vh.marginal),'Lo que se deja de ganar por hora al desplazar el producto menos rentable')}${kpi('Mejor uso de la hora',vh.mejor?vh.mejor.pid:'—',vh.mejor?cop(vh.mejor.mph)+' por hora':'')}</div>
+      <div class="tw"><table class="t"><thead><tr><th class="num">#</th><th>Producto</th><th class="num">Margen/kg</th><th class="num">Volumen</th><th class="num">Horas</th><th class="num">Margen</th><th class="num">Margen / hora</th></tr></thead><tbody>${vrows}</tbody></table></div>`:''}
+      <p class="note">Si ${sel} es la restricción, priorizar pedidos por margen por hora de ${sel}, no por margen por kg.</p></div>
+    <div class="card"><h3>Demanda no atendible por capacidad</h3>
+      ${lost.length?`<table class="t"><thead><tr><th>Mes</th><th class="num">Volumen</th><th class="num">Ventas</th><th class="num">Margen</th></tr></thead><tbody>${lost.map(x=>`<tr><td>${lab(x.ym)}</td><td class="num">${ton(x.lost.kg)}</td><td class="num">${mm(x.lost.ventas)}</td><td class="num t-red">${mm(x.lost.margen)}</td></tr>`).join('')}
+      <tr class="grp"><td>Total</td><td class="num">${ton(sum(lost,x=>x.lost.kg))}</td><td class="num">${mm(sum(lost,x=>x.lost.ventas))}</td><td class="num">${mm(sum(lost,x=>x.lost.margen))}</td></tr></tbody></table>`:'<p class="note">Toda la demanda del horizonte es atendible.</p>'}
+      <p class="note">Estimación: en cada recurso excedido se recorta primero el producto con menor margen por hora de ese recurso.</p></div>
+  </div>`;
+}
+
+/* ---------- 5. Máquinas ---------- */
+function vMaquinas(){
+  const m=curM();
+  const rows=DB.machines.map(mc=>{ const r=m.mres.find(x=>x.id===mc.id)||{cap:Engine.cap(DB,mc,m.ym),util:0}; const k=`machines:${mc.id}`;
+    const u=Engine.ix(DB).proc[mc.procesos[0]]?.unidad==='golpe'?'g/min':'m/min';
+    return `<tr><td><b>${mc.id}</b></td><td>${inp(k+':nombre',mc.nombre,'text',150)}</td><td>${inp(k+':procesos',mc.procesos,'list',80)}</td>
+      <td>${inp(k+':velocidad',mc.velocidad)} <small>${u}</small></td><td>${inp(k+':anchoMin',mc.anchoMin,'num',62)}–${inp(k+':anchoMax',mc.anchoMax,'num',62)}</td><td>${inp(k+':diamMax',mc.diamMax,'num',62)}</td>
+      <td>${inp(k+':familias',mc.familias,'list',130)}</td><td>${inp(k+':eficiencia',mc.eficiencia,'pct',62)}</td>
+      <td>${inp(k+':mantH',mc.mantH,'num',56)}</td><td>${inp(k+':limpH',mc.limpH,'num',56)}</td><td>${inp(k+':paradasH',mc.paradasH,'num',56)}</td>
+      <td>${inp(k+':cambioRolloMin',mc.cambioRolloMin,'num',56)}</td><td>${inp(k+':setupH',mc.setupH,'num',56)}</td>
+      <td class="num">${pct(r.cap.disponibilidad,0)}</td><td class="num">${fmt(r.cap.disp)}</td><td class="num">${pill(sem(r.util),pct(r.util,0))}</td>
+      <td><select class="ed" data-edit="${k}:estado:text">${opts([['Activa','Activa'],['Inactiva','Inactiva']],mc.estado)}</select></td>
+      <td>${inp(k+':fechaInicio',mc.fechaInicio,'text',70)}</td><td>${inp(k+':vidaUtil',mc.vidaUtil,'num',50)}</td><td>${inp(k+':costoHora',mc.costoHora,'num',90)}</td>
+      <td><button class="xb" data-act="delMachine" data-id="${mc.id}" title="Eliminar">×</button></td></tr>`; }).join('');
+  return head('Máquinas','Parámetros por máquina. Los cambios recalculan todo el modelo al salir de cada campo.',monthSel()+`<button class="btn" data-act="addMachine">Agregar máquina</button>`)+`
+  <div class="card"><div class="tw tall"><table class="t ed-t">
+    <thead><tr><th>Código</th><th>Nombre</th><th>Procesos</th><th>Velocidad prom.</th><th>Ancho mín–máx (mm)</th><th>Diám. máx (mm)</th><th>Tipos de producto</th><th>Eficiencia %</th><th>Mant. h/mes</th><th>Limpieza h/mes</th><th>Paradas no prog. h/mes</th><th>Cambio rollo (min)</th><th>Setup (h)</th><th class="num">Disponib.</th><th class="num">H disp.</th><th class="num">Util.</th><th>Estado</th><th>Entrada oper.</th><th>Vida útil</th><th>Costo/h</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="note">Procesos y tipos de producto separados por "|". Tipos vacíos = procesa cualquier familia. Cambio de rollo y setup vacíos = usa el estándar del proceso (Configuración). La eficiencia de máquina solo se usa si la fuente de eficiencia es "máquina" o "combinada". El diámetro máximo define los metros por rollo y, con ello, el número de cambios de rollo.</p></div>`;
+}
+
+/* ---------- 6. Productos / Mix ---------- */
+function vProductos(){
+  const m=curM(); const P=DB.products;
+  const rows=P.map(p=>{ const k=`products:${p.id}`, g=Engine.gramaje(p), mg=DB.margins.find(x=>x.prod===p.id)||{};
+    return `<tr><td><b>${p.id}</b></td><td>${inp(k+':descripcion',p.descripcion,'text',170)}</td><td>${inp(k+':familia',p.familia,'text',90)}</td>
+      <td><select class="ed" data-edit="${k}:cliente:text">${opts(DB.customers.map(c=>[c.id,c.nombre]),p.cliente)}</select></td>
+      <td class="sm">${p.estructura.map(l=>`${esc(l.material)} ${l.micras}µ`).join(' / ')}</td><td class="num">${fmt(g,1)}</td>
+      <td>${inp(k+':anchoWeb',p.anchoWeb,'num',62)}</td><td>${inp(k+':pistas',p.pistas,'num',50)}</td><td>${inp(k+':largo',p.largo,'num',56)}</td><td>${inp(k+':gramajeAdic',p.gramajeAdic,'num',50)}</td>
+      <td>${inp(k+':loteKg',p.loteKg,'num',70)}</td><td>${inp('margins:'+p.id+':margenKg',mg.margenKg,'num',70)}</td><td>${inp('margins:'+p.id+':precioKg',mg.precioKg,'num',76)}</td>
+      <td><select class="ed" data-edit="${k}:estado:text">${opts([['Activo','Activo'],['Inactivo','Inactivo']],p.estado)}</select></td></tr>`; }).join('');
+  // Mix
+  const dem=Engine.demandBy(R.db,m.ym,CFG.tiposDemanda); const T=sum(Object.values(dem));
+  if(!UI.mix||UI.mix.ym!==m.ym){ UI.mix={ym:m.ym,sh:{}}; P.forEach(p=>UI.mix.sh[p.id]=+(100*(dem[p.id]||0)/T).toFixed(1)); }
+  const sh=UI.mix.sh, st=sum(Object.values(sh),x=>+x||0);
+  const nd={}; P.forEach(p=>nd[p.id]=T*(+sh[p.id]||0)/(st||1));
+  const r0=m, r1=Engine.runMonth(R.db,CFG,m.ym,{demand:nd});
+  const mixRows=P.map(p=>`<tr><td><b>${p.id}</b> ${esc(p.descripcion)}</td><td class="num">${pct((dem[p.id]||0)/T)}</td><td><input type="number" step="0.5" data-mix="${p.id}" value="${sh[p.id]}" style="width:70px"></td><td class="num">${ton(nd[p.id])}</td><td class="num">${cop(Engine.margin(R.db,p.id))}</td></tr>`).join('');
+  const cmp=(l,a,b,f,good)=>`<tr><td>${l}</td><td class="num">${f(a)}</td><td class="num">${f(b)}</td><td class="num ${good==null?'':((b-a)*(good?1:-1)>0?'t-green':(b-a)!==0?'t-red':'')}">${typeof a==='number'&&typeof b==='number'?((b-a>=0?'+':'')+f(b-a)):''}</td></tr>`;
+  const procs=R.db.processes.filter(p=>p.activo);
+  chart('chMix',{type:'bar',data:{labels:procs.map(p=>p.nombre),datasets:[
+    {label:'Mix actual',data:procs.map(p=>r0.pools.find(x=>x.id===p.id).util*100),backgroundColor:'#9db3cc'},
+    {label:'Nuevo mix',data:procs.map(p=>r1.pools.find(x=>x.id===p.id).util*100),backgroundColor:COL.blue}]},options:{scales:{y:{...pctAxis,beginAtZero:true}}}});
+  return head('Productos y mix','Referencias, estructura y economía por kg. Abajo: impacto de un cambio de mix sobre el cuello de botella.',monthSel())+`
+  <div class="card"><div class="tw"><table class="t ed-t"><thead><tr><th>Código</th><th>Descripción</th><th>Familia</th><th>Cliente</th><th>Estructura</th><th class="num">g/m²</th><th>Ancho web (m)</th><th>Pistas</th><th>Avance/largo (m)</th><th>Tintas+adh. g/m²</th><th>Lote prom. kg</th><th>MC $/kg</th><th>Precio $/kg</th><th>Estado</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="note">Gramaje = Σ(micras × densidad) + tintas y adhesivos. Pistas = rollos angostos que salen del refile de impreso; los pasos posteriores procesan esos metros multiplicados. Avance/largo = metros por golpe en Corte. Lote promedio = kg por cambio de referencia (define el número de setups). MC incluye arancel; no incluye fletes ni comisiones.</p></div>
+  <div class="grid g12">
+    <div class="card"><h3>Nuevo mix · ${lab(m.ym)} · mismo volumen total (${ton(T)})</h3>
+      <table class="t"><thead><tr><th>Producto</th><th class="num">Actual</th><th>Nuevo %</th><th class="num">Volumen</th><th class="num">MC/kg</th></tr></thead><tbody>${mixRows}</tbody></table>
+      <p class="note">Suma: ${fmt(st,1)} % ${Math.abs(st-100)>0.5?'(se normaliza a 100 %)':''}. <a data-act="mixReset">Restablecer</a></p></div>
+    <div class="card"><h3>Impacto del cambio de mix</h3>
+      <table class="t"><thead><tr><th></th><th class="num">Actual</th><th class="num">Nuevo</th><th class="num">Δ</th></tr></thead><tbody>
+      ${cmp('Cuello de botella',r0.bn?.id+' · '+pct(r0.maxU,0),r1.bn?.id+' · '+pct(r1.maxU,0),x=>x)}
+      ${cmp('Capacidad efectiva (t)',r0.capKg/1000,r1.capKg/1000,x=>fmt(x,1),true)}
+      ${cmp('Capacidad disponible (t)',(r0.capKg-r0.demKg)/1000,(r1.capKg-r1.demKg)/1000,x=>fmt(x,1),true)}
+      ${cmp('Horas requeridas',sum(r0.mres,x=>x.load.h),sum(r1.mres,x=>x.load.h),x=>fmt(x),false)}
+      ${cmp('Margen total ($ M)',r0.margen/1e6,r1.margen/1e6,x=>fmt(x,1),true)}
+      ${cmp('Margen atendible ($ M)',(r0.margen-r0.lost.margen)/1e6,(r1.margen-r1.lost.margen)/1e6,x=>fmt(x,1),true)}
+      </tbody></table>${canvas('chMix',230)}</div>
+  </div>`;
+}
+
+/* ---------- 7. Rutas ---------- */
+function vRutas(){
+  const db=DB, x=Engine.ix(db), p=x.prod[UI.ruta]||db.products[0]; if(!p) return head('Rutas productivas','Sin productos');
+  const fs=Engine.factors(db,p);
+  const rows=fs.map((f,i)=>{ const s=f.step, k=`routeSteps:${p.id}#${s.seq}`;
+    const cands=db.machines.filter(m=>m.procesos.includes(s.proc));
+    const mcell=cands.map(m=>{ const on=s.maquinas.includes(m.id); const rs=Engine.reasons(db,p,f,m);
+      const hk=on&&!rs.length? (Engine.perKg(db,CFG,p,f,m)): null;
+      return `<label class="mc ${on?(rs.length?'bad':'on'):''}" title="${esc(rs.join('; ')||'Compatible')}"><input type="checkbox" data-step="${p.id}#${s.seq}" data-m="${m.id}" ${on?'checked':''}> ${m.id}${hk?` <small>${fmt((hk.hProc+hk.hRoll)*1000,1)} h/t</small>`:''}${on&&rs.length?' <small>⚠</small>':''}</label>`; }).join('');
+    const pr=x.proc[s.proc];
+    return `<tr><td class="num"><b>${s.seq}</b></td><td><select class="ed" data-edit="${k}:proc:text">${opts(db.processes.map(q=>[q.id,q.nombre]),s.proc)}</select></td>
+      <td>${mcell||'<span class="t-red">Ninguna máquina ejecuta este proceso</span>'}</td>
+      <td>${inp(k+':eficiencia',s.eficiencia,'pct',60)}</td><td>${inp(k+':yield',s.yield,'pct',60)}</td><td>${inp(k+':setupH',s.setupH,'num',56)}</td><td>${inp(k+':fraccion',s.fraccion??1,'pct',60)}</td>
+      <td class="num">${fmt(f.mPerKg,1)} m/kg${pr?.unidad==='golpe'?`<br><small>${fmt(f.mPerKg/(p.largo||0.25),1)} golpes/kg</small>`:''}</td><td class="num">${fmt(f.calibre,0)} µ</td><td class="num">${fmt(f.anchoMm,0)} mm</td>
+      <td class="nowrap"><button class="xb" data-act="stepUp" data-k="${p.id}#${s.seq}" ${i===0?'disabled':''}>↑</button><button class="xb" data-act="stepDel" data-k="${p.id}#${s.seq}">×</button></td></tr>`; }).join('');
+  const kg=1000; const m=curM();
+  const sumH=fs.map(f=>{ const op=Engine.options(db,CFG,p,f,kg); return {f,op}; });
+  return head('Rutas productivas','Cada referencia define su secuencia de procesos y sus máquinas compatibles',
+    `<label class="ctl">Producto <select data-ui="ruta">${opts(db.products.map(q=>[q.id,q.id+' '+q.descripcion]),p.id)}</select></label>`)+`
+  <div class="card"><div class="route-flow">${fs.map(f=>`<span>${esc(x.proc[f.step.proc]?.nombre||f.step.proc)}</span>`).join('<i>→</i>')}</div>
+    <p class="note">${esc(p.familia)} · ${esc(x.cust[p.cliente]?.nombre||'')} · ${p.estructura.map(l=>`${esc(l.material)} ${l.micras} µ (entra en paso ${l.paso})`).join(' + ')} · gramaje ${fmt(Engine.gramaje(p),1)} g/m² · ancho ${fmt(p.anchoWeb*1000,0)} mm · ${p.pistas} pista(s)</p>
+    <div class="tw"><table class="t ed-t"><thead><tr><th class="num">Paso</th><th>Proceso</th><th>Máquinas compatibles (h por tonelada)</th><th>Eficiencia %</th><th>Rendimiento %</th><th>Setup h (vacío = estándar)</th><th>% del volumen que pasa</th><th class="num">Metros</th><th class="num">Calibre</th><th class="num">Ancho</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="filters"><button class="btn" data-act="stepAdd">Agregar paso</button>
+      <span class="note">Marcadas en azul: compatibles y válidas. Con ⚠: asignadas pero bloqueadas por ancho, tipo de producto o estado (pasa el cursor para ver el motivo). Un laminado con 3 sustratos se modela como dos pasos de laminado; cada capa indica en qué paso entra.</span></div></div>
+  <div class="card"><h3>Consumo de capacidad por tonelada de ${p.id} (incluye setups de 1 lote y cambios de rollo)</h3>
+    <table class="t"><thead><tr><th>Paso</th><th>Proceso</th><th>Máquina</th><th class="num">Cantidad</th><th class="num">H proceso</th><th class="num">H rollos</th><th class="num">H setup</th><th class="num">H totales</th></tr></thead><tbody>
+    ${sumH.map(({f,op})=>op.map((o,j)=>`<tr><td class="num">${j?'':f.step.seq}</td><td>${j?'':esc(x.proc[f.step.proc]?.nombre)}</td><td>${o.m}</td><td class="num">${fmt(o.qty)} ${x.proc[f.step.proc]?.unidad==='golpe'?'golpes':'m'}</td><td class="num">${fmt(o.hProc,2)}</td><td class="num">${fmt(o.hRoll,2)}</td><td class="num">${fmt(o.hSetup,2)}</td><td class="num"><b>${fmt(o.h,2)}</b></td></tr>`).join('')||`<tr><td class="num">${f.step.seq}</td><td colspan="7" class="t-red">Sin máquina compatible</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+/* ---------- 8. Simulador ---------- */
+function scnSummary(run){ const ms=run.months, t=CFG.sem; const peak=[...ms].sort((a,b)=>b.maxU-a.maxU)[0];
+  return {capT:avg(ms.map(m=>m.capKg||0)), demT:avg(ms.map(m=>m.demKg)), peakU:peak.maxU, peakBn:peak.bn?.id, peakYm:peak.ym,
+    deficit:ms.filter(m=>m.maxU>t.rojo).length, lostKg:sum(ms,m=>m.lost.kg), lostMg:sum(ms,m=>m.lost.margen),
+    mgAt:sum(ms,m=>m.margen-m.lost.margen), hDisp:sum(ms,m=>sum(m.mres,r=>r.cap.disp)), hReq:sum(ms,m=>sum(m.mres,r=>r.load.h)), sat:run.satRecurso}; }
+function vSimulador(){
+  const tabs=`<div class="tabs"><a class="${UI.simTab==='esc'?'on':''}" data-act="simTab" data-t="esc">Escenarios</a><a class="${UI.simTab==='ped'?'on':''}" data-act="simTab" data-t="ped">Analizar nuevo pedido</a></div>`;
+  return head('Simulador','Escenarios de capacidad y evaluación de pedidos')+tabs+(UI.simTab==='ped'?vPedido():vEscenarios());
+}
+function vEscenarios(){
+  const s=scnById(UI.scnEdit)||SCN[0]; const ed=!s.fijo;
+  const runs=UI.compare.map(id=>scnById(id)).filter(Boolean).map(sc=>{ const db=dbFor(sc); Engine.invalidate(db); const r=Engine.run(db,CFG); return {sc,r,s:scnSummary(r)}; });
+  const base=runs.find(x=>x.sc.id==='base')||runs[0];
+  const calRows=DB.calendar.map(c=>{ const v=(s.cal&&s.cal[c.proc])||{};
+    return `<tr><td>${pName(c.proc)}</td>${['turnos','horasTurno','diasMes','horasExtra'].map(k=>`<td><input type="number" step="any" ${ed?'':'disabled'} data-scn="cal:${c.proc}:${k}" value="${v[k]??''}" placeholder="${c[k]}" style="width:62px"></td>`).join('')}</tr>`; }).join('');
+  const nv=(s.nuevas||[]).concat([{}]).slice(0,3);
+  const fld=(k,l,u)=>`<label class="fl"><span>${l}</span><input type="number" step="any" ${ed?'':'disabled'} data-scn="${k}" value="${s[k]??''}" placeholder="0"> <small>${u}</small></label>`;
+  const met=[['Capacidad efectiva promedio',x=>ton(x.capT),x=>x.capT,1],['Demanda promedio',x=>ton(x.demT),x=>x.demT,null],['Utilización pico',x=>pct(x.peakU,0),x=>x.peakU,-1],
+    ['Cuello de botella (mes pico)',x=>`${x.peakBn} · ${lab(x.peakYm)}`,null,null],['Meses en déficit',x=>x.deficit,x=>x.deficit,-1],['Volumen no atendible',x=>ton(x.lostKg),x=>x.lostKg,-1],
+    ['Margen potencial atendido',x=>mm(x.mgAt),x=>x.mgAt,1],['Margen perdido',x=>mm(x.lostMg),x=>x.lostMg,-1],['Horas disponibles (año)',x=>fmt(x.hDisp),x=>x.hDisp,1],
+    ['Horas requeridas (año)',x=>fmt(x.hReq),x=>x.hReq,null],['Primera saturación',x=>x.sat?lab(x.sat.ym)+' · '+x.sat.id:'Ninguna',null,null]];
+  const cmpT=`<table class="t cmp"><thead><tr><th></th>${runs.map(x=>`<th class="num">${esc(x.sc.nombre)}</th>`).join('')}</tr></thead><tbody>
+    ${met.map(([l,f,g,dir])=>`<tr><td>${l}</td>${runs.map(x=>{ let c=''; if(g&&dir&&x!==base){ const d=g(x.s)-g(base.s); if(Math.abs(d)>1e-6) c=(d*dir>0)?'t-green':'t-red'; } return `<td class="num ${c}">${f(x.s)}</td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+  const cols=[COL.grey,COL.blue,COL.green,COL.orange,COL.navy,'#8a5cc2','#3fa7a3'];
+  chart('chScn',{type:'line',data:{labels:months().map(lab),datasets:runs.map((x,i)=>({label:x.sc.nombre,data:x.r.months.map(m=>m.maxU*100),borderColor:cols[i%7],backgroundColor:cols[i%7],borderWidth:x.sc.id==='base'?2.5:1.6,pointRadius:1}))
+    .concat([{label:'Límite',data:months().map(()=>CFG.sem.rojo*100),borderColor:COL.red,borderDash:[5,4],pointRadius:0,borderWidth:1}])},options:{scales:{y:pctAxis}}});
+  return `<div class="grid g12">
+    <div class="card"><h3>Editar escenario</h3>
+      <div class="filters"><select data-ui="scnEdit">${opts(SCN.map(x=>[x.id,x.nombre]),s.id)}</select>
+        <button class="btn" data-act="scnNew">Nuevo</button><button class="btn" data-act="scnDup">Duplicar</button>${ed?`<button class="btn ghost" data-act="scnDel">Eliminar</button>`:''}
+        <button class="btn ${UI.scnActivo===s.id?'on':''}" data-act="scnActivate">${UI.scnActivo===s.id?'Activo en toda la app':'Usar en toda la app'}</button></div>
+      ${ed?`<label class="fl"><span>Nombre</span><input type="text" data-scn="nombre" value="${esc(s.nombre)}"></label>`:'<p class="note">El escenario Base usa los datos tal como están. Duplícalo para modificarlo.</p>'}
+      <div class="fgrid">${fld('demandaPct','Demanda','%')}${fld('efPP','Eficiencia','p.p.')}${fld('velPct','Velocidad','%')}${fld('paradasPct','Reducción paradas no prog.','%')}${fld('setupPct','Tiempos de cambio','%')}</div>
+      <h4>Calendario por proceso <small>(vacío = valor base)</small></h4>
+      <table class="t"><thead><tr><th>Proceso</th><th>Turnos</th><th>H/turno</th><th>Días/mes</th><th>H extra/máq.</th></tr></thead><tbody>${calRows}</tbody></table>
+      <h4>Nuevas máquinas</h4>
+      <table class="t"><thead><tr><th>Código</th><th>Clon de</th><th>Velocidad</th><th>Entra en (AAAA-MM)</th></tr></thead><tbody>
+      ${nv.map((n,i)=>`<tr><td><input type="text" ${ed?'':'disabled'} data-scn="nuevas:${i}:id" value="${esc(n.id||'')}" style="width:70px"></td><td><select ${ed?'':'disabled'} data-scn="nuevas:${i}:clonDe">${opts(DB.machines.map(m=>[m.id,m.id]),n.clonDe||'','—')}</select></td>
+        <td><input type="number" ${ed?'':'disabled'} data-scn="nuevas:${i}:velocidad" value="${n.velocidad??''}" style="width:70px"></td><td><input type="text" ${ed?'':'disabled'} data-scn="nuevas:${i}:fecha" value="${esc(n.fecha||'')}" style="width:80px"></td></tr>`).join('')}</tbody></table>
+      <p class="note">La nueva máquina copia velocidad, anchos y paros de la original y se vuelve compatible con todas las rutas donde esta aparece.</p>
+      <h4><label><input type="checkbox" ${ed?'':'disabled'} data-scn="mixOn" ${s.mixOn?'checked':''}> Cambiar mix (participación % por producto)</label></h4>
+      ${s.mixOn?`<div class="fgrid">${DB.products.map(p=>`<label class="fl"><span>${p.id}</span><input type="number" step="any" ${ed?'':'disabled'} data-scn="mix:${p.id}" value="${s.mix?.[p.id]??''}"> <small>%</small></label>`).join('')}</div>`:''}
+    </div>
+    <div><div class="card"><h3>Comparación lado a lado</h3>
+      <div class="chips">${SCN.map(x=>`<label class="chip"><input type="checkbox" data-cmp="${x.id}" ${UI.compare.includes(x.id)?'checked':''}> ${esc(x.nombre)}</label>`).join('')}</div>
+      <div class="tw">${cmpT}</div><p class="note">Verde/rojo: mejor/peor que el escenario Base. Horizonte de ${CFG.horizonte} meses.</p></div>
+      <div class="card"><h3>Utilización del recurso limitante por escenario</h3>${canvas('chScn',280)}</div></div>
+  </div>`;
+}
+function orderKg(o){ const p=Engine.ix(DB).prod[o.prod]; if(!p) return 0; const g=Engine.gramaje(p); const c=+o.cant||0;
+  if(o.unidad==='kg') return c; if(o.unidad==='m') return c*p.anchoWeb*g/1000;
+  if(o.unidad==='und'){ const w=p.anchoWeb/(p.pistas||1); return c*w*(p.largo||0.25)*g/1000; } return c; }
+function vPedido(){
+  const o=UI.pedido, P=DB.products.filter(p=>!o.cli||p.cliente===o.cli);
+  const r=UI.pedidoRes; const m=curM(); const vh=m.bn?valorHora(m,m.bn.id):null;
+  let res='';
+  if(r&&r.error) res=`<div class="card"><div class="status st-red">${esc(r.error)}</div></div>`;
+  else if(r){
+    const c=r.estado==='ACEPTABLE'?'green':r.estado==='NO ACEPTABLE'?'red':'orange';
+    const lim=r.limitante; let msg='';
+    if(r.estado==='ACEPTABLE') msg=`El pedido cabe en la capacidad libre hasta el ${r.o.fecha}. Recurso más exigido: ${lim?lim.m:'—'}.`;
+    else if(r.palanca==='horasExtra') msg=`No cabe en horario normal; se puede atender con ${fmt(r.horasExtra)} h extra (${Object.entries(r.extra).map(([k,v])=>k+' '+fmt(v)+' h').join(', ')}), con un costo estimado de ${mm(r.costoExtra)}. A tiempo normal se alcanzan ${ton(r.maxKg)}.`;
+    else if(r.palanca==='parcial') msg=`No es posible atender completo en la fecha. ${lim?lim.m+' es la restricción.':''} Entrega parcial posible: ${ton(r.maxKg)} (${pct(r.maxKg/r.o.kg,0)}) al ${r.o.fecha}. ${r.fechaCompleta?'Pedido completo posible al '+r.fechaCompleta+'.':'No se completa en los 12 meses siguientes.'}`;
+    else msg=`${r.motivo||'No hay capacidad suficiente ni con horas extra.'} ${r.fechaCompleta?'Fecha posible para el pedido completo: '+r.fechaCompleta+'.':''}`;
+    const src=r.alloc||r.base; const ix=Engine.ix(R.db);
+    const rows=src.steps.map(st=>{ const ms=Object.keys(st.asign); const disp=ms.length?sum(ms,k=>r.free[k]):0;
+      return `<tr><td class="num">${st.step.seq}</td><td>${esc(st.proc?.nombre||st.step.proc)}</td><td>${st.noCompat?'<span class="t-red">Sin compatible</span>':ms.join(', ')}</td>
+        <td class="num">${fmt(st.disp)} h</td><td class="num">${fmt(st.req,1)} h</td><td class="num">${fmt(st.disp-st.req)} h</td>
+        <td>${st.noCompat||st.short>0.01?pill('red','RESTRICCIÓN'+(st.short>0.01&&isFinite(st.short)?' · faltan '+fmt(st.short)+' h':'')):(r.palanca==='horasExtra'&&ms.some(k=>r.extra[k])?pill('orange','Con horas extra'):pill('green','OK'))}</td></tr>`; }).join('');
+    const cmpV=vh&&r.mphLim!=null?(r.mphLim>=vh.marginal?`genera ${cop(r.mphLim)} por hora de ${lim.m}, más que el valor marginal del cuello (${cop(vh.marginal)}): desplazar otra producción para atenderlo mejora el margen.`:`genera ${cop(r.mphLim)} por hora de ${lim.m}, menos que el valor marginal del cuello (${cop(vh.marginal)}): si la capacidad es escasa, conviene priorizar otros productos.`):'';
+    res=`<div class="card"><div class="status st-${c}">${r.estado}</div><p class="msg">${esc(msg)}</p>
+      <div class="tw"><table class="t"><thead><tr><th class="num">Paso</th><th>Proceso</th><th>Máquina(s)</th><th class="num">Disponible</th><th class="num">Requerido</th><th class="num">Saldo</th><th>Resultado</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="note">Disponible = horas libres de las máquinas compatibles entre ${CFG.fechaCorte} y ${r.o.fecha}, después de ${o.forecast?'pedidos confirmados y forecast':'pedidos confirmados'}. Las máquinas compartidas entre pasos descuentan horas en secuencia.</p>
+      <div class="grid g4 tight">${kpi('Volumen',ton(r.o.kg),o.unidad!=='kg'?fmt(o.cant)+' '+o.unidad:'')}${kpi('Ventas',mm(r.ventas))}${kpi('Margen de contribución',mm(r.margen))}${kpi('Margen por hora de '+(lim?lim.m:'—'),cop(r.mphLim),lim?fmt(r.hLim,1)+' h en ese recurso':'')}</div>
+      ${cmpV?`<p class="msg">Este pedido ${cmpV}</p>`:''}</div>`;
+  }
+  return `<div class="grid g12"><div class="card"><h3>Datos del pedido</h3>
+    <label class="fl"><span>Cliente</span><select data-ped="cli">${opts(DB.customers.map(c=>[c.id,c.nombre]),o.cli,'Todos')}</select></label>
+    <label class="fl"><span>Producto</span><select data-ped="prod">${opts(P.map(p=>[p.id,p.id+' '+p.descripcion]),o.prod)}</select></label>
+    <label class="fl"><span>Cantidad</span><input type="number" data-ped="cant" value="${o.cant}"></label>
+    <label class="fl"><span>Unidad</span><select data-ped="unidad">${opts([['kg','kg'],['m','metros lineales'],['und','unidades']],o.unidad)}</select></label>
+    <label class="fl"><span>Fecha requerida</span><input type="date" data-ped="fecha" value="${o.fecha}"></label>
+    <label class="fl"><span></span><label><input type="checkbox" data-ped="forecast" ${o.forecast?'checked':''}> Reservar también capacidad del forecast</label></label>
+    <p class="note">Equivale a ${ton(orderKg(o))} de producto terminado.</p>
+    <button class="btn pri" data-act="pedido">Analizar pedido</button></div>
+    <div>${res||'<div class="card empty">Ingresa el pedido y presiona <b>Analizar pedido</b>. El sistema explota la ruta, asigna máquinas compatibles y compara contra las horas libres hasta la fecha requerida.</div>'}</div></div>`;
+}
+
+/* ---------- 9. CAPEX ---------- */
+function vCapex(){
+  const res=capexResults(); const ok=res.filter(x=>!x.err); const best=[...ok].sort((a,b)=>b.vpn-a.vpn)[0];
+  const tipos=[['eficiencia','Mejora de eficiencia'],['turno','Turno adicional'],['horasExtra','Horas extra'],['maquina','Nueva máquina']];
+  const prm={eficiencia:'p.p. eficiencia',turno:'turnos adicionales',horasExtra:'h extra/mes por máquina',maquina:'—'};
+  const edRows=DB.capex.map(a=>{ const k=`capex:${a.id}`;
+    return `<tr><td><b>${a.id}</b></td><td>${inp(k+':nombre',a.nombre,'text',220)}</td><td><select class="ed" data-edit="${k}:tipo:text">${opts(tipos,a.tipo)}</select></td>
+      <td><select class="ed" data-edit="${k}:proceso:text">${opts(DB.processes.map(p=>[p.id,p.nombre]),a.proceso)}</select></td>
+      <td>${a.tipo==='maquina'?'—':inp(k+':param',a.param,'num',60)+` <small>${prm[a.tipo]}</small>`}</td>
+      <td>${a.tipo==='maquina'?`${inp(k+':maquinaId',a.maquinaId,'text',50)} clon de <select class="ed" data-edit="${k}:clonDe:text">${opts(DB.machines.filter(m=>m.procesos.includes(a.proceso)).map(m=>[m.id,m.id]),a.clonDe)}</select> ${inp(k+':velocidad',a.velocidad,'num',56)} <small>m/min</small> desde ${inp(k+':fecha',a.fecha,'text',66)}`:'—'}</td>
+      <td>${inp(k+':inversion',a.inversion,'num',110)}</td><td>${inp(k+':opexAnual',a.opexAnual,'num',100)}</td><td>${inp(k+':vida',a.vida,'num',44)}</td>
+      <td><button class="xb" data-act="capexDel" data-id="${a.id}">×</button></td></tr>`; }).join('');
+  const rows=res.map(x=>x.err?`<tr><td>${esc(x.a.nombre)}</td><td colspan="11" class="t-red">${esc(x.err)}</td></tr>`:
+    `<tr class="${x===best?'best':''}"><td><b>${x.a.id}</b> ${esc(x.a.nombre)}</td><td class="num">${mm(x.a.inversion)}</td><td class="num">${fmt(x.capH)} h</td><td class="num">${ton(x.capKg,0)}</td><td class="num">${ton(x.kgIncr,0)}</td><td class="num">${mm(x.ventasIncr)}</td><td class="num">${mm(x.margenIncr)}</td><td class="num">${mm(x.opex)}${x.opexAuto?' <small>auto</small>':''}</td>
+      <td class="num ${x.ebitda<0?'t-red':'t-green'}"><b>${mm(x.ebitda)}</b></td><td class="num">${x.payback==null?'No recupera':x.payback<0.01?'Inmediato':fmt(x.payback,1)+' años'}</td><td class="num">${x.roi==null?'—':pct(x.roi,0)}</td>
+      <td class="num ${x.vpn<0?'t-red':''}">${mm(x.vpn)}</td><td class="num">${x.tir==null?'—':pct(x.tir,0)}</td><td>${x.sigCuello?x.sigCuello.id+' · '+pct(x.sigCuello.u,0):'—'}</td></tr>`).join('');
+  chart('chCapex',{type:'bubble',data:{datasets:ok.map((x,i)=>({label:x.a.id+' '+x.a.nombre,data:[{x:x.a.inversion/1e6,y:x.kgIncr/1000,r:Math.max(4,Math.min(26,Math.sqrt(Math.abs(x.ebitda)/1e6)))}],
+    backgroundColor:(x.ebitda>=0?COL.blue:COL.red)+'99',borderColor:x.ebitda>=0?COL.blue:COL.red}))},
+    options:{scales:{x:{title:{display:true,text:'CAPEX ($ millones)'},beginAtZero:true},y:{title:{display:true,text:'Volumen adicional atendido (t/año)'},beginAtZero:true}}}});
+  return head('CAPEX y expansión de capacidad','Cada alternativa se evalúa corriendo el modelo completo: solo genera margen la capacidad que libera la restricción',`<button class="btn" data-act="capexAdd">Agregar alternativa</button>`)+`
+  <div class="card"><h3>Alternativas</h3><div class="tw"><table class="t ed-t"><thead><tr><th></th><th>Nombre</th><th>Tipo</th><th>Proceso</th><th>Parámetro</th><th>Nueva máquina</th><th>Inversión (COP)</th><th>Costo operativo anual</th><th>Vida (años)</th><th></th></tr></thead><tbody>${edRows}</tbody></table></div>
+    <p class="note">Horas extra con costo operativo vacío: se calcula con las horas extra efectivamente usadas × costo/hora de la máquina × (1 + recargo de ${pct(CFG.recargoHoraExtra,0)}).</p></div>
+  <div class="card"><h3>Evaluación · horizonte de ${CFG.horizonte} meses anualizado</h3><div class="tw"><table class="t">
+    <thead><tr><th>Alternativa</th><th class="num">CAPEX</th><th class="num">Horas añadidas</th><th class="num">Capacidad efectiva añadida</th><th class="num">Volumen atendido</th><th class="num">Ventas incr.</th><th class="num">Margen incr.</th><th class="num">Costo operativo</th><th class="num">EBITDA incr.</th><th class="num">Payback</th><th class="num">ROI anual</th><th class="num">VPN</th><th class="num">TIR</th><th>Siguiente cuello</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="note">Resaltada: mayor VPN. Capacidad efectiva añadida = suma de los aumentos mensuales de throughput; volumen atendido = demanda que deja de perderse. VPN y TIR antes de impuestos, con tasa de descuento de ${pct(CFG.tasaDescuento,1)} (parámetro demo en Configuración, pendiente de confirmar) y el EBITDA del primer año repetido durante la vida útil.</p></div>
+  <div class="card"><h3>CAPEX vs volumen adicional atendido (tamaño = EBITDA)</h3>${canvas('chCapex',300)}</div>`;
+}
+
+/* ---------- 10. Datos ---------- */
+const SCHEMA={
+  machines:{t:'Máquinas',key:'id',f:['id','nombre','procesos','velocidad','anchoMin','anchoMax','diamMax','familias','eficiencia','mantH','limpH','paradasH','cambioRolloMin','setupH','estado','fechaInicio','vidaUtil','costoHora'],list:['procesos','familias'],txt:['id','nombre','estado','fechaInicio']},
+  production:{t:'Producción',f:['mes','prod','kg'],txt:['mes','prod']},
+  demand:{t:'Demanda',f:['prod','mes','tipo','kg'],txt:['prod','mes','tipo']},
+  products:{t:'Productos',key:'id',f:['id','descripcion','familia','cliente','unidadVenta','anchoWeb','pistas','largo','gramajeAdic','loteKg','estado','estructura'],txt:['id','descripcion','familia','cliente','unidadVenta','estado','estructura']},
+  routeSteps:{t:'Rutas',f:['prod','seq','proc','maquinas','eficiencia','yield','setupH','fraccion'],list:['maquinas'],txt:['prod','proc']},
+  calendar:{t:'Tiempos por proceso',key:'proc',f:['proc','turnos','horasTurno','diasMes','setupH','cambioRolloMin','maxHorasExtra','horasExtra'],txt:['proc']},
+  velocidades:{t:'Velocidades',virtual:true,f:['machine','velocidad','prod','seq'],txt:['machine','prod']},
+  downtime:{t:'Paros mensuales',f:['machine','mes','mant','limp','paradas'],txt:['machine','mes']},
+  margins:{t:'Márgenes',key:'prod',f:['prod','margenKg','precioKg'],txt:['prod']},
+  customers:{t:'Clientes',key:'id',f:['id','nombre','segmento'],txt:['id','nombre','segmento']},
+  processes:{t:'Procesos',key:'id',f:['id','nombre','unidad','tipo','activo'],txt:['id','nombre','unidad','tipo']},
+};
+const strucToTxt=e=>e.map(l=>`${l.material}:${l.micras}:${l.densidad}:${l.paso}`).join('|');
+const txtToStruc=s=>String(s).split('|').filter(Boolean).map(x=>{const [material,micras,densidad,paso]=x.split(':'); return {material,micras:+micras,densidad:+densidad,paso:+paso};});
+function exportRows(ent){
+  if(ent==='velocidades'){ const o=DB.machines.map(m=>({machine:m.id,velocidad:m.velocidad,prod:'',seq:''}));
+    DB.routeSteps.forEach(s=>Object.entries(s.velocidades||{}).forEach(([m,v])=>o.push({machine:m,velocidad:v,prod:s.prod,seq:s.seq}))); return o; }
+  const sc=SCHEMA[ent]; return DB[ent].map(r=>{ const o={}; sc.f.forEach(k=>{ let v=r[k]; if(k==='estructura') v=strucToTxt(v); else if(Array.isArray(v)) v=v.join('|'); o[k]=v??''; }); return o; });
+}
+function toCSV(ent){ const sc=SCHEMA[ent], rows=exportRows(ent); const q=v=>{ const s=String(v??''); return /[;"\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
+  return '\ufeff'+[sc.f.join(';'),...rows.map(r=>sc.f.map(k=>q(typeof r[k]==='number'?String(r[k]).replace('.',','):r[k])).join(';'))].join('\n'); }
+function download(name,text,type='text/csv'){ const b=new Blob([text],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
+function parseCSV(text){ text=text.replace(/^\ufeff/,''); const first=text.split(/\r?\n/)[0]; const d=(first.split(';').length>=first.split(',').length)?';':',';
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){ const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=ch; }
+    else if(ch==='"') q=true; else if(ch===d){row.push(cur);cur='';} else if(ch==='\n'||ch==='\r'){ if(ch==='\r'&&text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=ch; }
+  if(cur!==''||row.length){row.push(cur); rows.push(row);}
+  const h=rows.shift().map(x=>x.trim()); return {rows:rows.filter(r=>r.some(c=>c!=='')).map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]??'']))),dec:d===';'?',':'.'}; }
+function normRow(ent,raw,dec){ const sc=SCHEMA[ent], o={}; const keys=Object.keys(raw); 
+  sc.f.forEach(k=>{ const rk=keys.find(x=>x.trim().toLowerCase()===k.toLowerCase()); let v=rk!=null?raw[rk]:''; 
+    if(k==='estructura'){ o[k]=txtToStruc(v); return; }
+    if(sc.list&&sc.list.includes(k)){ o[k]=String(v).split('|').map(s=>s.trim()).filter(Boolean); return; }
+    if(sc.txt.includes(k)){ o[k]=String(v).trim(); return; }
+    if(k==='activo'){ o[k]=!/^(0|no|false|falso)$/i.test(String(v)); return; }
+    if(v===''||v==null){ o[k]=null; return; }
+    if(typeof v==='string'){ v=v.trim(); if(dec===',') v=v.replace(/\./g,'').replace(',','.'); }
+    o[k]=+v; });
+  return o; }
+async function importFile(ent,file){
+  let rows, dec='.';
+  if(/\.csv$|\.txt$/i.test(file.name)){ const r=parseCSV(await file.text()); rows=r.rows; dec=r.dec; }
+  else { if(!window.XLSX) throw new Error('Para leer Excel se necesita conexión (SheetJS). Guarda el archivo como CSV o conéctate.'); const wb=XLSX.read(await file.arrayBuffer()); rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}); }
+  if(!rows.length) throw new Error('El archivo no tiene filas.');
+  const N=rows.map(r=>normRow(ent,r,dec));
+  if(ent==='velocidades'){ let n=0; N.forEach(r=>{ if(!r.machine||!(r.velocidad>0)) return;
+      if(r.prod){ const st=DB.routeSteps.find(s=>s.prod===r.prod&&s.seq===+r.seq); if(st){ st.velocidades=st.velocidades||{}; st.velocidades[r.machine]=r.velocidad; n++; } }
+      else { const m=DB.machines.find(x=>x.id===r.machine); if(m){ m.velocidad=r.velocidad; n++; } } }); return `${n} velocidades actualizadas.`; }
+  if(ent==='products'){ N.forEach(p=>{ if(!p.estructura.length) p.estructura=[{material:'Film',micras:20,densidad:0.92,paso:1}]; }); }
+  if(ent==='routeSteps'){ N.forEach(s=>{ s.velocidades={}; }); const prods=new Set(N.map(s=>s.prod)); DB.routeSteps=DB.routeSteps.filter(s=>!prods.has(s.prod)).concat(N); return `${N.length} pasos importados para ${prods.size} producto(s); sus rutas anteriores se reemplazaron.`; }
+  if(ent==='demand'){ const keys=new Set(N.map(r=>r.mes+'|'+r.tipo)); DB.demand=DB.demand.filter(r=>!keys.has(r.mes+'|'+r.tipo)).concat(N); return `${N.length} filas de demanda; se reemplazaron los meses y tipos incluidos en el archivo.`; }
+  if(ent==='production'){ const keys=new Set(N.map(r=>r.mes)); DB.production=DB.production.filter(r=>!keys.has(r.mes)).concat(N); return `${N.length} filas de producción importadas.`; }
+  if(ent==='downtime'){ const keys=new Set(N.map(r=>r.machine+'|'+r.mes)); DB.downtime=DB.downtime.filter(r=>!keys.has(r.machine+'|'+r.mes)).concat(N); return `${N.length} filas de paros importadas.`; }
+  const key=SCHEMA[ent].key; let a=0,u=0;
+  N.forEach(r=>{ const i=DB[ent].findIndex(x=>x[key]===r[key]); if(i>=0){ DB[ent][i]={...DB[ent][i],...r}; u++; } else { if(ent==='machines'){ r.estado=r.estado||'Activa'; } DB[ent].push(r); a++; } });
+  if(ent==='products') N.forEach(p=>{ if(!DB.routes.some(r=>r.prod===p.id)) DB.routes.push({prod:p.id,version:1,activa:true}); });
+  return `${u} registros actualizados y ${a} nuevos en ${SCHEMA[ent].t}.`;
+}
+function vDatos(){
+  const cards=Object.entries(SCHEMA).map(([k,s])=>`<div class="dcard"><div><b>${s.t}</b><small>${s.virtual?'actualiza velocidades de máquina o por paso':(DB[k]?.length??0)+' registros'}</small></div>
+    <div class="dact"><label class="btn">Importar<input type="file" accept=".csv,.xlsx,.xls,.txt" data-imp="${k}" hidden></label><button class="btn ghost" data-act="tpl" data-e="${k}">Plantilla CSV</button></div>
+    <div class="cols">${s.f.join(' · ')}</div></div>`).join('');
+  return head('Datos','Fuentes del modelo. Cada tabla se puede reemplazar por datos reales desde Excel o CSV sin cambiar el motor.')+
+  (UI.importMsg?`<div class="banner">${esc(UI.importMsg)}</div>`:'')+`
+  <div class="dgrid">${cards}</div>
+  <div class="card"><h3>Respaldo completo</h3><div class="filters">
+    <button class="btn" data-act="expJSON">Exportar modelo (JSON)</button><label class="btn">Importar modelo (JSON)<input type="file" accept=".json" data-impjson hidden></label>
+    <button class="btn ghost" data-act="resetDemo">Restablecer datos demo</button></div>
+    <p class="note">La plantilla CSV descarga los datos actuales con el formato esperado (separador ";", decimales con coma). Listas con "|", por ejemplo máquinas compatibles "I01|I03". Estructura: "material:micras:densidad:paso|…". Demanda: tipo = Confirmado, Forecast, Presupuesto o Histórico; mes = AAAA-MM. Los datos se guardan en este navegador.</p></div>`;
+}
+
+/* ---------- 11. Configuración ---------- */
+function vConfig(){
+  const c=CFG, cf=(k,l,v,t='num',n='')=>`<label class="fl"><span>${l}</span>${t==='pct'?`<input type="number" step="any" data-cfg="${k}:pct" value="${+(v*100).toFixed(2)}"> <small>%</small>`:`<input type="${t==='num'?'number':'text'}" step="any" data-cfg="${k}:${t}" value="${esc(v)}">`} <small>${n}</small></label>`;
+  const calRows=DB.calendar.map(x=>{ const k=`calendar:${x.proc}`; return `<tr><td>${pName(x.proc)}</td><td>${inp(k+':turnos',x.turnos,'num',56)}</td><td>${inp(k+':horasTurno',x.horasTurno,'num',56)}</td><td>${inp(k+':diasMes',x.diasMes,'num',56)}</td><td class="num">${fmt(x.turnos*x.horasTurno*x.diasMes)}</td><td>${inp(k+':setupH',x.setupH,'num',60)}</td><td>${inp(k+':cambioRolloMin',x.cambioRolloMin,'num',60)}</td><td>${inp(k+':maxHorasExtra',x.maxHorasExtra,'num',60)}</td></tr>`; }).join('');
+  const prRows=DB.processes.map(p=>{ const k=`processes:${p.id}`; return `<tr><td><b>${p.id}</b></td><td>${inp(k+':nombre',p.nombre,'text',150)}</td><td><select class="ed" data-edit="${k}:unidad:text">${opts([['m','Metros (m/min)'],['golpe','Golpes (golpes/min)'],['m2','m²'],['und','Unidades']],p.unidad)}</select></td><td>${inp(k+':tipo',p.tipo,'text',120)}</td><td><select class="ed" data-edit="${k}:activo:bool">${opts([['true','Activo'],['false','Inactivo']],String(p.activo))}</select></td></tr>`; }).join('');
+  return head('Configuración','Parámetros y reglas del modelo')+`
+  <div class="grid g2">
+    <div class="card"><h3>Semáforo de utilización</h3>
+      ${cf('sem.amarillo','Amarillo desde',c.sem.amarillo,'pct')}${cf('sem.naranja','Naranja desde',c.sem.naranja,'pct')}${cf('sem.rojo','Rojo por encima de',c.sem.rojo,'pct')}
+      <div class="semdemo">${pill('green','< '+pct(c.sem.amarillo,0))}${pill('yellow',pct(c.sem.amarillo,0)+'–'+pct(c.sem.naranja,0))}${pill('orange',pct(c.sem.naranja,0)+'–'+pct(c.sem.rojo,0))}${pill('red','> '+pct(c.sem.rojo,0))}</div>
+      <h3>Reglas de cálculo</h3>
+      <label class="fl"><span>Fuente de eficiencia</span><select data-cfg="effSource:text">${opts([['ruta','Paso de ruta (producto-proceso)'],['maquina','Máquina'],['combinada','Máquina × ruta']],c.effSource)}</select> <small>pendiente de confirmar</small></label>
+      <label class="fl"><span>Asignación de máquinas</span><select data-cfg="politica:text">${opts([['balanceo','Balanceo de carga'],['preferente','Primera máquina compatible']],c.politica)}</select></label>
+      <label class="fl"><span>Demanda que carga capacidad</span><span>${['Confirmado','Forecast','Presupuesto'].map(tp=>`<label><input type="checkbox" data-tipo="${tp}" ${c.tiposDemanda.includes(tp)?'checked':''}> ${tp}</label>`).join(' ')}</span></label>
+      ${cf('diamCore','Diámetro del core',c.diamCore,'num','mm')}${cf('chunks','Granularidad del balanceo',c.chunks,'num','fracciones por tarea')}
+      ${cf('minDisponibilidad','Alerta de baja disponibilidad bajo',c.minDisponibilidad,'pct')}
+    </div>
+    <div class="card"><h3>Horizonte</h3>
+      ${cf('fechaCorte','Fecha de corte (hoy del modelo)',c.fechaCorte,'text','AAAA-MM-DD')}${cf('mesInicio','Primer mes del horizonte',c.mesInicio,'text','AAAA-MM')}${cf('horizonte','Meses del horizonte',c.horizonte,'num')}
+      <h3>Parámetros financieros (COP)</h3>
+      ${cf('tasaDescuento','Tasa de descuento',c.tasaDescuento,'pct','demo · por confirmar')}${cf('recargoHoraExtra','Recargo promedio hora extra',c.recargoHoraExtra,'pct','demo · por confirmar')}
+      <h3>Supuestos vigentes</h3>
+      <ul class="sup"><li>La demanda se expresa en kg de producto terminado y se convierte a metros con gramaje y ancho del web.</li><li>Las mermas se acumulan hacia atrás: cada paso procesa la cantidad necesaria para cubrir el rendimiento de los pasos siguientes.</li><li>Después del refile de impreso los metros se multiplican por el número de pistas.</li><li>Setups = número de cambios de referencia (demanda ÷ lote promedio) × tiempo de cambio.</li><li>Cambios de rollo = metros ÷ metros por rollo (diámetro máximo, core y calibre acumulado).</li><li>Las máquinas compartidas usan el calendario de su primer proceso.</li><li>No hay tercerización ni tiempos de tránsito entre procesos.</li><li>Planeación de capacidad agregada por mes, no programación secuencial.</li></ul>
+    </div>
+  </div>
+  <div class="card"><h3>Calendario y tiempos estándar por proceso</h3><div class="tw"><table class="t ed-t"><thead><tr><th>Proceso</th><th>Turnos</th><th>Horas/turno</th><th>Días/mes</th><th class="num">H teóricas/máq.</th><th>Tiempo de cambio (h)</th><th>Cambio de rollo (min)</th><th>Máx. horas extra/mes</th></tr></thead><tbody>${calRows}</tbody></table></div></div>
+  <div class="card"><h3>Procesos</h3><div class="tw"><table class="t ed-t"><thead><tr><th>Código</th><th>Nombre</th><th>Unidad de capacidad</th><th>Tipo</th><th>Estado</th></tr></thead><tbody>${prRows}</tbody></table></div>
+    <div class="filters"><input type="text" id="newProcId" placeholder="Código" style="width:80px"><input type="text" id="newProcName" placeholder="Nombre"><button class="btn" data-act="addProc">Agregar proceso</button></div></div>`;
+}
+
+/* =====================================================================
+   6. NAVEGACIÓN, RENDER Y EVENTOS
+   ===================================================================== */
+const NAV=[['resumen','Resumen ejecutivo',vResumen],['capacidad','Capacidad',vCapacidad],['demanda','Demanda',vDemanda],['cuellos','Cuellos de botella',vCuellos],
+  ['maquinas','Máquinas',vMaquinas],['productos','Productos / Mix',vProductos],['rutas','Rutas productivas',vRutas],['simulador','Simulador',vSimulador],
+  ['capex','CAPEX',vCapex],['datos','Datos',vDatos],['config','Configuración',vConfig]];
+function render(keepScroll){
+  const y=window.scrollY; AFTER=[];
+  $('#nav').innerHTML=NAV.map(([k,t],i)=>`<a class="${UI.view===k?'on':''}" data-act="go" data-v="${k}"><span class="n">${i+1}</span>${t}</a>`).join('');
+  $('#scnSel').innerHTML=opts(SCN.map(s=>[s.id,s.nombre]),UI.scnActivo);
+  $('#scnFlag').className=UI.scnActivo==='base'?'flag':'flag on';
+  let html; try{ html=NAV.find(n=>n[0]===UI.view)[2](); }catch(e){ console.error(e); html=`<div class="card"><div class="status st-red">Error al calcular esta vista</div><p class="msg">${esc(e.message)}</p><p class="note">Revisa los últimos datos modificados o restablece los datos demo en la sección Datos.</p></div>`; }
+  $('#view').innerHTML=html;
+  AFTER.forEach(f=>{ try{f();}catch(e){console.error(e);} });
+  if(keepScroll) window.scrollTo(0,y); else window.scrollTo(0,0);
+}
+function setPath(obj,path,val){ const ks=path.split('.'); let o=obj; ks.slice(0,-1).forEach(k=>o=o[k]); o[ks[ks.length-1]]=val; }
+function findRow(coll,key){
+  if(coll==='routeSteps'){ const [p,s]=key.split('#'); return DB.routeSteps.find(x=>x.prod===p&&String(x.seq)===s); }
+  if(coll==='calendar') return DB.calendar.find(x=>x.proc===key);
+  if(coll==='margins'){ let r=DB.margins.find(x=>x.prod===key); if(!r){ r={prod:key,margenKg:0,precioKg:0}; DB.margins.push(r);} return r; }
+  return (DB[coll]||[]).find(x=>x.id===key);
+}
+function changed(){ R.capex=null; recalc(); render(true); }
+
+document.addEventListener('change',async e=>{
+  const t=e.target, d=t.dataset;
+  if(d.edit){ const [coll,key,field,type]=d.edit.split(':'); const row=findRow(coll,key); if(!row) return;
+    let v=t.value;
+    if(type==='num') v=v===''?null:+v; else if(type==='pct') v=v===''?null:+v/100; else if(type==='list') v=v.split('|').map(s=>s.trim()).filter(Boolean); else if(type==='bool') v=v==='true';
+    if(coll==='routeSteps'&&field==='proc'){ row.maquinas=DB.machines.filter(m=>m.procesos.includes(v)).map(m=>m.id); }
+    row[field]=v; changed(); return; }
+  if(d.ui){ const k=d.ui; if(k.startsWith('f.')){ UI.f[k.slice(2)]=t.value; if(k==='f.proc') UI.f.maq=''; } else UI[k]=t.value;
+    if(k==='ruta'||k==='scnEdit') {} render(true); return; }
+  if(d.mix){ UI.mix.sh[d.mix]=+t.value||0; render(true); return; }
+  if(d.step){ const [p,s]=d.step.split('#'); const st=DB.routeSteps.find(x=>x.prod===p&&String(x.seq)===s);
+    if(t.checked){ if(!st.maquinas.includes(d.m)) st.maquinas.push(d.m); } else st.maquinas=st.maquinas.filter(x=>x!==d.m); changed(); return; }
+  if(d.scn){ const s=scnById(UI.scnEdit); if(!s||s.fijo) return; const ks=d.scn.split(':'); let v=t.type==='checkbox'?t.checked:t.value;
+    if(ks[0]==='nombre') s.nombre=v;
+    else if(ks[0]==='mixOn'){ s.mixOn=v; if(v&&!s.mix){ const m=curM(); const T=m.demKg; s.mix={}; DB.products.forEach(p=>s.mix[p.id]=+(100*(m.dem[p.id]||0)/T).toFixed(1)); } }
+    else if(ks[0]==='mix'){ s.mix=s.mix||{}; s.mix[ks[1]]=v===''?0:+v; }
+    else if(ks[0]==='cal'){ s.cal=s.cal||{}; s.cal[ks[1]]=s.cal[ks[1]]||{}; if(v==='') delete s.cal[ks[1]][ks[2]]; else s.cal[ks[1]][ks[2]]=+v; }
+    else if(ks[0]==='nuevas'){ s.nuevas=s.nuevas||[]; const i=+ks[1]; s.nuevas[i]=s.nuevas[i]||{}; s.nuevas[i][ks[2]]=ks[2]==='velocidad'?(v===''?'':+v):v; s.nuevas=s.nuevas.filter(n=>n&&(n.id||n.clonDe)); }
+    else s[ks[0]]=v===''?null:+v;
+    saveState(); if(UI.scnActivo===s.id) recalc(); render(true); return; }
+  if(d.cmp){ UI.compare=t.checked?[...new Set([...UI.compare,d.cmp])]:UI.compare.filter(x=>x!==d.cmp); render(true); return; }
+  if(d.ped){ UI.pedido[d.ped]=t.type==='checkbox'?t.checked:(d.ped==='cant'?+t.value:t.value);
+    if(d.ped==='cli'){ const p=DB.products.find(p=>!t.value||p.cliente===t.value); if(p&&t.value&&Engine.ix(DB).prod[UI.pedido.prod]?.cliente!==t.value) UI.pedido.prod=p.id; }
+    render(true); return; }
+  if(d.cfg){ const [k,type]=d.cfg.split(':'); let v=t.value; if(type==='num') v=+v; if(type==='pct') v=+v/100;
+    setPath(CFG,k,v); changed(); return; }
+  if(d.tipo){ CFG.tiposDemanda=t.checked?[...new Set([...CFG.tiposDemanda,d.tipo])]:CFG.tiposDemanda.filter(x=>x!==d.tipo); changed(); return; }
+  if(d.imp){ const f=t.files[0]; if(!f) return; try{ UI.importMsg=await importFile(d.imp,f); Engine.invalidate(DB); changed(); }catch(err){ UI.importMsg='No se pudo importar: '+err.message; render(true); } return; }
+  if('impjson' in d){ const f=t.files[0]; if(!f) return; try{ const o=JSON.parse(await f.text()); if(!o.DB||!o.CFG) throw new Error('El archivo no tiene la estructura del modelo.'); DB=o.DB; CFG=o.CFG; SCN=o.SCN||SCN; UI.importMsg='Modelo importado.'; changed(); }catch(err){ UI.importMsg='No se pudo importar: '+err.message; render(true);} }
+});
+
+const ACT={
+  go:a=>{ UI.view=a.dataset.v; render(); },
+  calcCapex:()=>{ capexResults(); render(true); },
+  simTab:a=>{ UI.simTab=a.dataset.t; render(true); },
+  pedido:()=>{ const o=UI.pedido; const kg=orderKg(o); UI.pedidoRes=Engine.evaluateOrder(R.db,CFG,{prod:o.prod,kg,fecha:o.fecha,incluirForecast:o.forecast}); render(true); },
+  mixReset:()=>{ UI.mix=null; render(true); },
+  addMachine:()=>{ const last=DB.machines[DB.machines.length-1]; let n=DB.machines.length+1, id='M'+String(n).padStart(2,'0'); while(DB.machines.some(m=>m.id===id)) id='M'+String(++n).padStart(2,'0');
+    DB.machines.push({...structuredClone(last),id,nombre:'Nueva máquina',fechaInicio:''}); changed(); },
+  delMachine:a=>{ if(!confirm('¿Eliminar la máquina '+a.dataset.id+'? Se quitará de las rutas.')) return; DB.machines=DB.machines.filter(m=>m.id!==a.dataset.id); DB.routeSteps.forEach(s=>s.maquinas=s.maquinas.filter(x=>x!==a.dataset.id)); changed(); },
+  stepAdd:()=>{ const steps=DB.routeSteps.filter(s=>s.prod===UI.ruta); const seq=steps.length?Math.max(...steps.map(s=>s.seq))+1:1; const proc=DB.processes[0].id;
+    DB.routeSteps.push({prod:UI.ruta,seq,proc,maquinas:DB.machines.filter(m=>m.procesos.includes(proc)).map(m=>m.id),eficiencia:0.85,yield:0.99,setupH:null,fraccion:1,velocidades:{}}); changed(); },
+  stepDel:a=>{ const [p,s]=a.dataset.k.split('#'); DB.routeSteps=DB.routeSteps.filter(x=>!(x.prod===p&&String(x.seq)===s)); renumber(p); changed(); },
+  stepUp:a=>{ const [p,s]=a.dataset.k.split('#'); const st=DB.routeSteps.filter(x=>x.prod===p).sort((x,y)=>x.seq-y.seq); const i=st.findIndex(x=>String(x.seq)===s); if(i>0){ const t=st[i].seq; st[i].seq=st[i-1].seq; st[i-1].seq=t; } changed(); },
+  scnNew:()=>{ const id='s'+Date.now().toString(36); SCN.push({id,nombre:'Escenario '+SCN.length}); UI.scnEdit=id; UI.compare.push(id); saveState(); render(true); },
+  scnDup:()=>{ const s=scnById(UI.scnEdit); const id='s'+Date.now().toString(36); const c=structuredClone(s); c.id=id; c.nombre=s.nombre+' (copia)'; delete c.fijo; SCN.push(c); UI.scnEdit=id; UI.compare.push(id); saveState(); render(true); },
+  scnDel:()=>{ const id=UI.scnEdit; SCN=SCN.filter(s=>s.id!==id); UI.compare=UI.compare.filter(x=>x!==id); if(UI.scnActivo===id){UI.scnActivo='base'; recalc();} UI.scnEdit='base'; saveState(); render(true); },
+  scnActivate:()=>{ UI.scnActivo=UI.scnEdit; R.capex=null; recalc(); render(true); },
+  capexAdd:()=>{ const id=String.fromCharCode(65+DB.capex.length); DB.capex.push({id:DB.capex.some(c=>c.id===id)?'X'+Date.now()%1000:id,nombre:'Nueva alternativa',tipo:'horasExtra',proceso:'LAM',param:20,maquinaId:'',clonDe:'',velocidad:'',fecha:'',inversion:0,opexAnual:null,vida:1}); changed(); },
+  capexDel:a=>{ DB.capex=DB.capex.filter(c=>c.id!==a.dataset.id); changed(); },
+  tpl:a=>download((SCHEMA[a.dataset.e].t.replace(/\s/g,'_'))+'.csv',toCSV(a.dataset.e)),
+  expJSON:()=>download('modelo_capacidad_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({DB,CFG,SCN},null,1),'application/json'),
+  resetDemo:()=>{ if(!confirm('Se reemplazarán todos los datos y escenarios por los datos demo.')) return; DB=structuredClone(DEMO.data); CFG=structuredClone(DEMO.cfg); SCN=structuredClone(DEMO.scenarios); UI.scnActivo='base'; UI.importMsg='Datos demo restablecidos.'; changed(); },
+  addProc:()=>{ const id=($('#newProcId').value||'').trim().toUpperCase(), nombre=($('#newProcName').value||'').trim(); if(!id||!nombre||DB.processes.some(p=>p.id===id)) return alert('Indica un código nuevo y un nombre.');
+    DB.processes.push({id,nombre,unidad:'m',tipo:'Conversión',activo:true}); DB.calendar.push({proc:id,turnos:2,horasTurno:8,diasMes:26,setupH:0.5,cambioRolloMin:6,maxHorasExtra:40,horasExtra:0}); changed(); },
+};
+function renumber(p){ DB.routeSteps.filter(x=>x.prod===p).sort((a,b)=>a.seq-b.seq).forEach((s,i)=>s.seq=i+1); }
+document.addEventListener('click',e=>{ const a=e.target.closest('[data-act]'); if(a&&ACT[a.dataset.act]){ e.preventDefault(); ACT[a.dataset.act](a,e); } });
+document.addEventListener('DOMContentLoaded',()=>{
+  $('#scnSel').addEventListener('change',e=>{ e.stopPropagation(); UI.scnActivo=e.target.value; R.capex=null; recalc(); render(true); });
+  $('#btnPedido').addEventListener('click',()=>{ UI.view='simulador'; UI.simTab='ped'; render(); });
+  loadState(); recalc(); render();
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2856 @@
+{
+ "DB": {
+  "processes": [
+   {
+    "id": "REF",
+    "nombre": "Refile",
+    "unidad": "m",
+    "tipo": "Preparación",
+    "activo": true
+   },
+   {
+    "id": "IMP",
+    "nombre": "Impresión",
+    "unidad": "m",
+    "tipo": "Transformación",
+    "activo": true
+   },
+   {
+    "id": "LAM",
+    "nombre": "Laminado",
+    "unidad": "m",
+    "tipo": "Transformación",
+    "activo": true
+   },
+   {
+    "id": "RFI",
+    "nombre": "Refile de impreso",
+    "unidad": "m",
+    "tipo": "Conversión",
+    "activo": true
+   },
+   {
+    "id": "INS",
+    "nombre": "Inspección",
+    "unidad": "m",
+    "tipo": "Calidad",
+    "activo": true
+   },
+   {
+    "id": "SEL",
+    "nombre": "Sellado",
+    "unidad": "golpe",
+    "tipo": "Conversión",
+    "activo": true
+   },
+   {
+    "id": "PEG",
+    "nombre": "Pegado",
+    "unidad": "m",
+    "tipo": "Conversión",
+    "activo": true
+   },
+   {
+    "id": "COR",
+    "nombre": "Corte",
+    "unidad": "golpe",
+    "tipo": "Conversión",
+    "activo": true
+   },
+   {
+    "id": "REB",
+    "nombre": "Rebobine",
+    "unidad": "m",
+    "tipo": "Conversión",
+    "activo": true
+   }
+  ],
+  "calendar": [
+   {
+    "proc": "REF",
+    "turnos": 2,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.33,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "IMP",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 2.46,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "LAM",
+    "turnos": 2,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.41,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 48,
+    "horasExtra": 0
+   },
+   {
+    "proc": "RFI",
+    "turnos": 2,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.47,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "INS",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.25,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "SEL",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 2.14,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "PEG",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.66,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "COR",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 1.0,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   },
+   {
+    "proc": "REB",
+    "turnos": 3,
+    "horasTurno": 8,
+    "diasMes": 26,
+    "setupH": 0.55,
+    "cambioRolloMin": 0,
+    "maxHorasExtra": 40,
+    "horasExtra": 0
+   }
+  ],
+  "machines": [
+   {
+    "id": "CT-2",
+    "nombre": "CORTADORA 2",
+    "procesos": [
+     "COR"
+    ],
+    "velocidad": 200,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.541,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 60,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34463.22
+   },
+   {
+    "id": "CT-3",
+    "nombre": "CORTADORA 3",
+    "procesos": [
+     "COR"
+    ],
+    "velocidad": 200,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.673,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 60,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34463.22
+   },
+   {
+    "id": "CT-DB1",
+    "nombre": "CORTADORA DABA 1",
+    "procesos": [
+     "COR"
+    ],
+    "velocidad": 200,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.736,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 60,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34463.22
+   },
+   {
+    "id": "CT-FR1",
+    "nombre": "CORTADORA FRESHI 1",
+    "procesos": [
+     "COR"
+    ],
+    "velocidad": 259,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 1.0,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 60,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34463.22
+   },
+   {
+    "id": "INP-1",
+    "nombre": "INSPECCIONADORA 1",
+    "procesos": [
+     "INS"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.288,
+    "mantH": 11.667,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 68253.53
+   },
+   {
+    "id": "INP-2",
+    "nombre": "INSPECCIONADORA 2",
+    "procesos": [
+     "INS"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.8,
+    "mantH": 11.667,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 68253.53
+   },
+   {
+    "id": "LM-1",
+    "nombre": "LAMINADORA 1",
+    "procesos": [
+     "LAM"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.17,
+    "mantH": 11,
+    "limpH": 0,
+    "paradasH": 60,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 73597.51
+   },
+   {
+    "id": "MRF-01",
+    "nombre": "MIRAFLEX 1",
+    "procesos": [
+     "IMP"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.435,
+    "mantH": 38,
+    "limpH": 0,
+    "paradasH": 115,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 20,
+    "costoHora": 651081.72
+   },
+   {
+    "id": "MRF-02",
+    "nombre": "MIRAFLEX 2",
+    "procesos": [
+     "IMP"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.499,
+    "mantH": 38,
+    "limpH": 0,
+    "paradasH": 115,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 20,
+    "costoHora": 651081.72
+   },
+   {
+    "id": "MRF-03",
+    "nombre": "MIRAFLEX 3",
+    "procesos": [
+     "IMP"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.421,
+    "mantH": 38,
+    "limpH": 0,
+    "paradasH": 115,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 20,
+    "costoHora": 651081.72
+   },
+   {
+    "id": "MRF-04",
+    "nombre": "MIRAFLEX 4",
+    "procesos": [
+     "IMP"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.424,
+    "mantH": 38,
+    "limpH": 0,
+    "paradasH": 115,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 20,
+    "costoHora": 651081.72
+   },
+   {
+    "id": "PG-1",
+    "nombre": "PEGADORA 1",
+    "procesos": [
+     "PEG"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.327,
+    "mantH": 8.333333333,
+    "limpH": 0,
+    "paradasH": 90,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34183.95
+   },
+   {
+    "id": "PG-3",
+    "nombre": "PEGADORA 3",
+    "procesos": [
+     "PEG"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.401,
+    "mantH": 8.333333333,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34183.95
+   },
+   {
+    "id": "PG-4",
+    "nombre": "PEGADORA 4",
+    "procesos": [
+     "PEG"
+    ],
+    "velocidad": 400,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.493,
+    "mantH": 8.333333333,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 34183.95
+   },
+   {
+    "id": "RE-1",
+    "nombre": "REBOBINADORA 1",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.177,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "RE-2",
+    "nombre": "REBOBINADORA 2",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.8,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "RE-3",
+    "nombre": "REBOBINADORA 3",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.229,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "RE-4",
+    "nombre": "REBOBINADORA 4",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.211,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "RE-5",
+    "nombre": "REBOBINADORA 5",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.213,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "RE-6",
+    "nombre": "REBOBINADORA 6",
+    "procesos": [
+     "REB"
+    ],
+    "velocidad": 300,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.176,
+    "mantH": 3.333333333,
+    "limpH": 0,
+    "paradasH": 20,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 22431.95
+   },
+   {
+    "id": "SB-1",
+    "nombre": "SELLADORA DE BOLSAS 1",
+    "procesos": [
+     "SEL"
+    ],
+    "velocidad": 140,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.411,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 100,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 55520.3
+   },
+   {
+    "id": "SB-3",
+    "nombre": "SELLADORA DE BOLSAS 3",
+    "procesos": [
+     "SEL"
+    ],
+    "velocidad": 75,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.732,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 100,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 55520.3
+   },
+   {
+    "id": "SB-4",
+    "nombre": "SELLADORA DE BOLSAS 4",
+    "procesos": [
+     "SEL"
+    ],
+    "velocidad": 200,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.299,
+    "mantH": 7,
+    "limpH": 0,
+    "paradasH": 120,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 55520.3
+   },
+   {
+    "id": "VNS-1",
+    "nombre": "INS-VENUS 1",
+    "procesos": [
+     "REF",
+     "RFI"
+    ],
+    "velocidad": 800,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.016,
+    "mantH": 11.66666667,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 68253.53
+   },
+   {
+    "id": "VNS-2",
+    "nombre": "INS-VENUS 2",
+    "procesos": [
+     "REF",
+     "RFI"
+    ],
+    "velocidad": 800,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.151,
+    "mantH": 11.66666667,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 68253.53
+   },
+   {
+    "id": "VNS-3",
+    "nombre": "INS-VENUS 3",
+    "procesos": [
+     "REF",
+     "RFI"
+    ],
+    "velocidad": 800,
+    "anchoMin": 150,
+    "anchoMax": 1000,
+    "diamMax": 800,
+    "familias": [],
+    "eficiencia": 0.8,
+    "mantH": 11.66666667,
+    "limpH": 0,
+    "paradasH": 30,
+    "cambioRolloMin": null,
+    "setupH": null,
+    "estado": "Activa",
+    "fechaInicio": "2025-01",
+    "vidaUtil": 15,
+    "costoHora": 68253.53
+   }
+  ],
+  "customers": [
+   {
+    "id": "K01",
+    "nombre": "GASEOSAS LUX S A S",
+    "segmento": ""
+   },
+   {
+    "id": "K02",
+    "nombre": "CENTURION FOODS SAS",
+    "segmento": ""
+   },
+   {
+    "id": "K03",
+    "nombre": "CPNS SAS",
+    "segmento": ""
+   },
+   {
+    "id": "K04",
+    "nombre": "AGROPECUARIA ALIAR SA",
+    "segmento": ""
+   },
+   {
+    "id": "K05",
+    "nombre": "CINTAS ANDINAS DE COLOMBIA SA",
+    "segmento": ""
+   },
+   {
+    "id": "K06",
+    "nombre": "MASIDA",
+    "segmento": ""
+   },
+   {
+    "id": "K07",
+    "nombre": "MULTIVAC DOMINICANA SA",
+    "segmento": ""
+   }
+  ],
+  "products": [
+   {
+    "id": "F01",
+    "descripcion": "Etiqueta termoencogible en rollo",
+    "familia": "Etiquetas",
+    "cliente": "K01",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.852,
+    "pistas": 3,
+    "largo": 0.25,
+    "gramajeAdic": 0,
+    "loteKg": 644,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 51.8,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F02",
+    "descripcion": "Etiqueta roll-fed (lámina impresa)",
+    "familia": "Etiquetas",
+    "cliente": "K01",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.605,
+    "pistas": 1,
+    "largo": 0.25,
+    "gramajeAdic": 0,
+    "loteKg": 334,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 28.1,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F03",
+    "descripcion": "Fundas y etiquetas cortadas",
+    "familia": "Fundas",
+    "cliente": "K01",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.606,
+    "pistas": 1,
+    "largo": 0.1104,
+    "gramajeAdic": 0,
+    "loteKg": 532,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 53.5,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F04",
+    "descripcion": "Etiqueta cortada y rebobinada",
+    "familia": "Etiquetas",
+    "cliente": "K01",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.76,
+    "pistas": 2,
+    "largo": 0.1494,
+    "gramajeAdic": 0,
+    "loteKg": 204,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 30.6,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F05",
+    "descripcion": "Lámina laminada (termoformado / rollo)",
+    "familia": "Laminados",
+    "cliente": "K02",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.52,
+    "pistas": 1,
+    "largo": 0.25,
+    "gramajeAdic": 0,
+    "loteKg": 435,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película impresa (eq.)",
+      "micras": 18.2,
+      "densidad": 1.0,
+      "paso": 1
+     },
+     {
+      "material": "Sustrato laminado (eq.)",
+      "micras": 53.3,
+      "densidad": 1.0,
+      "paso": 3
+     }
+    ]
+   },
+   {
+    "id": "F06",
+    "descripcion": "Bolsa laminada impresa",
+    "familia": "Bolsas",
+    "cliente": "K03",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.48,
+    "pistas": 1,
+    "largo": 0.1973,
+    "gramajeAdic": 0,
+    "loteKg": 335,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película impresa (eq.)",
+      "micras": 16.5,
+      "densidad": 1.0,
+      "paso": 1
+     },
+     {
+      "material": "Sustrato laminado (eq.)",
+      "micras": 58.2,
+      "densidad": 1.0,
+      "paso": 2
+     }
+    ]
+   },
+   {
+    "id": "F07",
+    "descripcion": "Bolsa impresa",
+    "familia": "Bolsas",
+    "cliente": "K04",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.3,
+    "pistas": 1,
+    "largo": 0.1927,
+    "gramajeAdic": 0,
+    "loteKg": 241,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 86.5,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F08",
+    "descripcion": "Servicio de impresión",
+    "familia": "Servicios",
+    "cliente": "K05",
+    "unidadVenta": "kg",
+    "anchoWeb": 1.0,
+    "pistas": 1,
+    "largo": 0.25,
+    "gramajeAdic": 0,
+    "loteKg": 3605,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 23.7,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F09",
+    "descripcion": "Bolsa sin impresión",
+    "familia": "Bolsas",
+    "cliente": "K06",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.3,
+    "pistas": 1,
+    "largo": 0.2441,
+    "gramajeAdic": 0,
+    "loteKg": 139,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 88.8,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F10",
+    "descripcion": "Fundas sin impresión (pegado y corte)",
+    "familia": "Fundas",
+    "cliente": "K01",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.426,
+    "pistas": 1,
+    "largo": 0.1503,
+    "gramajeAdic": 0,
+    "loteKg": 338,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 63.7,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   },
+   {
+    "id": "F11",
+    "descripcion": "Laminado sin impresión",
+    "familia": "Laminados",
+    "cliente": "K07",
+    "unidadVenta": "kg",
+    "anchoWeb": 0.42,
+    "pistas": 1,
+    "largo": 0.25,
+    "gramajeAdic": 0,
+    "loteKg": 384,
+    "estado": "Activo",
+    "estructura": [
+     {
+      "material": "Película (eq.)",
+      "micras": 81.6,
+      "densidad": 1.0,
+      "paso": 1
+     }
+    ]
+   }
+  ],
+  "routes": [
+   {
+    "prod": "F01",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F02",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F03",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F04",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F05",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F06",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F07",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F08",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F09",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F10",
+    "version": 1,
+    "activa": true
+   },
+   {
+    "prod": "F11",
+    "version": 1,
+    "activa": true
+   }
+  ],
+  "routeSteps": [
+   {
+    "prod": "F01",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.438,
+    "setupH": 2.61,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F01",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.1,
+    "setupH": 0.55,
+    "fraccion": 0.279,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F01",
+    "seq": 3,
+    "proc": "PEG",
+    "maquinas": [
+     "PG-1",
+     "PG-3",
+     "PG-4"
+    ],
+    "eficiencia": 0.462,
+    "setupH": 0.48,
+    "fraccion": 1,
+    "yield": 0.914,
+    "velocidades": {}
+   },
+   {
+    "prod": "F01",
+    "seq": 4,
+    "proc": "REB",
+    "maquinas": [
+     "RE-1",
+     "RE-2",
+     "RE-3",
+     "RE-4",
+     "RE-5",
+     "RE-6"
+    ],
+    "eficiencia": 0.194,
+    "setupH": 0.58,
+    "fraccion": 1,
+    "yield": 0.988,
+    "velocidades": {}
+   },
+   {
+    "prod": "F02",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.516,
+    "setupH": 1.93,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F02",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.138,
+    "setupH": 0.22,
+    "fraccion": 0.099,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F03",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.395,
+    "setupH": 2.69,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F03",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.124,
+    "setupH": 0.45,
+    "fraccion": 0.148,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F03",
+    "seq": 3,
+    "proc": "PEG",
+    "maquinas": [
+     "PG-1",
+     "PG-3",
+     "PG-4"
+    ],
+    "eficiencia": 0.294,
+    "setupH": 1.04,
+    "fraccion": 1,
+    "yield": 0.85,
+    "velocidades": {}
+   },
+   {
+    "prod": "F03",
+    "seq": 4,
+    "proc": "COR",
+    "maquinas": [
+     "CT-2",
+     "CT-3",
+     "CT-DB1",
+     "CT-FR1"
+    ],
+    "eficiencia": 0.768,
+    "setupH": 0.79,
+    "fraccion": 1,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F04",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.446,
+    "setupH": 2.61,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F04",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.115,
+    "setupH": 0.22,
+    "fraccion": 0.651,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F04",
+    "seq": 3,
+    "proc": "PEG",
+    "maquinas": [
+     "PG-1",
+     "PG-3",
+     "PG-4"
+    ],
+    "eficiencia": 0.46,
+    "setupH": 0.36,
+    "fraccion": 1,
+    "yield": 0.85,
+    "velocidades": {}
+   },
+   {
+    "prod": "F04",
+    "seq": 4,
+    "proc": "COR",
+    "maquinas": [
+     "CT-2",
+     "CT-3",
+     "CT-DB1",
+     "CT-FR1"
+    ],
+    "eficiencia": 0.689,
+    "setupH": 1.2,
+    "fraccion": 1,
+    "yield": 0.983,
+    "velocidades": {}
+   },
+   {
+    "prod": "F04",
+    "seq": 5,
+    "proc": "REB",
+    "maquinas": [
+     "RE-1",
+     "RE-2",
+     "RE-3",
+     "RE-4",
+     "RE-5",
+     "RE-6"
+    ],
+    "eficiencia": 0.11,
+    "setupH": 0.37,
+    "fraccion": 1,
+    "yield": 0.957,
+    "velocidades": {}
+   },
+   {
+    "prod": "F05",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.35,
+    "setupH": 2.88,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F05",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.047,
+    "setupH": 0.5,
+    "fraccion": 0.198,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F05",
+    "seq": 3,
+    "proc": "LAM",
+    "maquinas": [
+     "LM-1"
+    ],
+    "eficiencia": 0.187,
+    "setupH": 0.39,
+    "fraccion": 1,
+    "yield": 0.985,
+    "velocidades": {}
+   },
+   {
+    "prod": "F06",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.356,
+    "setupH": 2.88,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F06",
+    "seq": 2,
+    "proc": "LAM",
+    "maquinas": [
+     "LM-1"
+    ],
+    "eficiencia": 0.172,
+    "setupH": 0.43,
+    "fraccion": 1,
+    "yield": 0.985,
+    "velocidades": {}
+   },
+   {
+    "prod": "F06",
+    "seq": 3,
+    "proc": "SEL",
+    "maquinas": [
+     "SB-1",
+     "SB-3",
+     "SB-4"
+    ],
+    "eficiencia": 0.302,
+    "setupH": 2.81,
+    "fraccion": 1,
+    "yield": 0.931,
+    "velocidades": {}
+   },
+   {
+    "prod": "F07",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.321,
+    "setupH": 2.37,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F07",
+    "seq": 2,
+    "proc": "SEL",
+    "maquinas": [
+     "SB-1",
+     "SB-3",
+     "SB-4"
+    ],
+    "eficiencia": 0.505,
+    "setupH": 2.03,
+    "fraccion": 1,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F08",
+    "seq": 1,
+    "proc": "IMP",
+    "maquinas": [
+     "MRF-01",
+     "MRF-02",
+     "MRF-03",
+     "MRF-04"
+    ],
+    "eficiencia": 0.335,
+    "setupH": 7.24,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F09",
+    "seq": 1,
+    "proc": "SEL",
+    "maquinas": [
+     "SB-1",
+     "SB-3",
+     "SB-4"
+    ],
+    "eficiencia": 0.5,
+    "setupH": 1.46,
+    "fraccion": 1,
+    "yield": 0.97,
+    "velocidades": {}
+   },
+   {
+    "prod": "F10",
+    "seq": 1,
+    "proc": "PEG",
+    "maquinas": [
+     "PG-1",
+     "PG-3",
+     "PG-4"
+    ],
+    "eficiencia": 0.276,
+    "setupH": 0.51,
+    "fraccion": 1,
+    "yield": 0.98,
+    "velocidades": {}
+   },
+   {
+    "prod": "F10",
+    "seq": 2,
+    "proc": "COR",
+    "maquinas": [
+     "CT-2",
+     "CT-3",
+     "CT-DB1",
+     "CT-FR1"
+    ],
+    "eficiencia": 0.503,
+    "setupH": 0.9,
+    "fraccion": 1,
+    "yield": 1.0,
+    "velocidades": {}
+   },
+   {
+    "prod": "F11",
+    "seq": 1,
+    "proc": "LAM",
+    "maquinas": [
+     "LM-1"
+    ],
+    "eficiencia": 0.133,
+    "setupH": 0.47,
+    "fraccion": 1,
+    "yield": 0.985,
+    "velocidades": {}
+   },
+   {
+    "prod": "F11",
+    "seq": 2,
+    "proc": "RFI",
+    "maquinas": [
+     "VNS-1",
+     "VNS-2",
+     "VNS-3"
+    ],
+    "eficiencia": 0.012,
+    "setupH": 0.63,
+    "fraccion": 0.319,
+    "yield": 1.0,
+    "velocidades": {}
+   }
+  ],
+  "margins": [],
+  "demand": [
+   {
+    "prod": "F01",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-10",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-11",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-12",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-01",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-02",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-03",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-04",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-05",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-06",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-07",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-08",
+    "tipo": "Forecast",
+    "kg": 4099
+   },
+   {
+    "prod": "F01",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 91706
+   },
+   {
+    "prod": "F02",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 74321
+   },
+   {
+    "prod": "F03",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 22161
+   },
+   {
+    "prod": "F04",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 6936
+   },
+   {
+    "prod": "F05",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 33527
+   },
+   {
+    "prod": "F06",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 9047
+   },
+   {
+    "prod": "F07",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 6513
+   },
+   {
+    "prod": "F08",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 1202
+   },
+   {
+    "prod": "F09",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 6201
+   },
+   {
+    "prod": "F10",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 4167
+   },
+   {
+    "prod": "F11",
+    "mes": "2027-09",
+    "tipo": "Forecast",
+    "kg": 4099
+   }
+  ],
+  "production": [
+   {
+    "prod": "F01",
+    "mes": "2026-03",
+    "kg": 57838
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-04",
+    "kg": 44139
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-05",
+    "kg": 62156
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-06",
+    "kg": 47620
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-07",
+    "kg": 89772
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-08",
+    "kg": 89320
+   },
+   {
+    "prod": "F01",
+    "mes": "2026-09",
+    "kg": 96027
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-01",
+    "kg": 28222
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-02",
+    "kg": 29339
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-03",
+    "kg": 62248
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-04",
+    "kg": 69497
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-05",
+    "kg": 71551
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-06",
+    "kg": 57664
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-07",
+    "kg": 84572
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-08",
+    "kg": 94558
+   },
+   {
+    "prod": "F02",
+    "mes": "2026-09",
+    "kg": 43832
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-03",
+    "kg": 8597
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-04",
+    "kg": 10563
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-05",
+    "kg": 17671
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-06",
+    "kg": 28428
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-07",
+    "kg": 31033
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-08",
+    "kg": 6844
+   },
+   {
+    "prod": "F03",
+    "mes": "2026-09",
+    "kg": 28607
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-03",
+    "kg": 7741
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-04",
+    "kg": 14547
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-05",
+    "kg": 5821
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-06",
+    "kg": 14092
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-07",
+    "kg": 5482
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-08",
+    "kg": 7834
+   },
+   {
+    "prod": "F04",
+    "mes": "2026-09",
+    "kg": 7492
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-03",
+    "kg": 21900
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-04",
+    "kg": 37879
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-05",
+    "kg": 11794
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-06",
+    "kg": 36779
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-07",
+    "kg": 29175
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-08",
+    "kg": 28288
+   },
+   {
+    "prod": "F05",
+    "mes": "2026-09",
+    "kg": 43120
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-03",
+    "kg": 8866
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-04",
+    "kg": 6512
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-05",
+    "kg": 8200
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-06",
+    "kg": 6520
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-07",
+    "kg": 10194
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-08",
+    "kg": 7381
+   },
+   {
+    "prod": "F06",
+    "mes": "2026-09",
+    "kg": 9566
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-03",
+    "kg": 3900
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-04",
+    "kg": 4896
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-05",
+    "kg": 4362
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-06",
+    "kg": 3529
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-07",
+    "kg": 4994
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-08",
+    "kg": 7272
+   },
+   {
+    "prod": "F07",
+    "mes": "2026-09",
+    "kg": 7273
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-02",
+    "kg": 30522
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-03",
+    "kg": 1799
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-04",
+    "kg": 4058
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-05",
+    "kg": 1324
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-06",
+    "kg": 2802
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-08",
+    "kg": 2418
+   },
+   {
+    "prod": "F08",
+    "mes": "2026-09",
+    "kg": 1187
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-03",
+    "kg": 6148
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-04",
+    "kg": 3938
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-05",
+    "kg": 10840
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-06",
+    "kg": 11220
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-07",
+    "kg": 7866
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-08",
+    "kg": 6812
+   },
+   {
+    "prod": "F09",
+    "mes": "2026-09",
+    "kg": 3926
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-03",
+    "kg": 602
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-04",
+    "kg": 2526
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-05",
+    "kg": 2614
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-06",
+    "kg": 2024
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-07",
+    "kg": 4446
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-08",
+    "kg": 3958
+   },
+   {
+    "prod": "F10",
+    "mes": "2026-09",
+    "kg": 4098
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-03",
+    "kg": 131
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-04",
+    "kg": 1502
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-05",
+    "kg": 6367
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-06",
+    "kg": 2116
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-07",
+    "kg": 7784
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-08",
+    "kg": 988
+   },
+   {
+    "prod": "F11",
+    "mes": "2026-09",
+    "kg": 3523
+   }
+  ],
+  "downtime": [],
+  "capex": [
+   {
+    "id": "A",
+    "nombre": "Mejora de eficiencia en Laminado (SMED + capacitación)",
+    "tipo": "eficiencia",
+    "proceso": "LAM",
+    "param": 6,
+    "maquinaId": "",
+    "clonDe": "",
+    "velocidad": "",
+    "fecha": "",
+    "inversion": 180000000,
+    "opexAnual": 40000000,
+    "vida": 5
+   },
+   {
+    "id": "B",
+    "nombre": "Tercer turno en Laminado",
+    "tipo": "turno",
+    "proceso": "LAM",
+    "param": 1,
+    "maquinaId": "",
+    "clonDe": "",
+    "velocidad": "",
+    "fecha": "",
+    "inversion": 25000000,
+    "opexAnual": 420000000,
+    "vida": 5
+   },
+   {
+    "id": "C",
+    "nombre": "Horas extra en Laminado",
+    "tipo": "horasExtra",
+    "proceso": "LAM",
+    "param": 48,
+    "maquinaId": "",
+    "clonDe": "",
+    "velocidad": "",
+    "fecha": "",
+    "inversion": 0,
+    "opexAnual": null,
+    "vida": 1
+   },
+   {
+    "id": "D",
+    "nombre": "Nueva laminadora LM-2",
+    "tipo": "maquina",
+    "proceso": "LAM",
+    "param": "",
+    "maquinaId": "LM-2",
+    "clonDe": "LM-1",
+    "velocidad": "",
+    "fecha": "2027-01",
+    "inversion": 4800000000,
+    "opexAnual": 380000000,
+    "vida": 12
+   },
+   {
+    "id": "E",
+    "nombre": "Nueva impresora MRF-05",
+    "tipo": "maquina",
+    "proceso": "IMP",
+    "param": "",
+    "maquinaId": "MRF-05",
+    "clonDe": "MRF-01",
+    "velocidad": "",
+    "fecha": "2027-01",
+    "inversion": 6500000000,
+    "opexAnual": 520000000,
+    "vida": 15
+   }
+  ]
+ },
+ "CFG": {
+  "sem": {
+   "amarillo": 0.8,
+   "naranja": 0.9,
+   "rojo": 1
+  },
+  "effSource": "ruta",
+  "politica": "balanceo",
+  "chunks": 24,
+  "diamCore": 152,
+  "tiposDemanda": [
+   "Confirmado",
+   "Forecast"
+  ],
+  "fechaCorte": "2026-10-13",
+  "mesInicio": "2026-10",
+  "horizonte": 12,
+  "tasaDescuento": 0.15,
+  "recargoHoraExtra": 0.25,
+  "minDisponibilidad": 0.88
+ },
+ "SCN": [
+  {
+   "id": "base",
+   "nombre": "Base",
+   "fijo": true
+  },
+  {
+   "id": "ef",
+   "nombre": "+ Eficiencia",
+   "efPP": 5
+  },
+  {
+   "id": "turno",
+   "nombre": "+ Turno",
+   "cal": {
+    "LAM": {
+     "turnos": 3
+    }
+   }
+  },
+  {
+   "id": "hx",
+   "nombre": "+ Horas extra",
+   "cal": {
+    "LAM": {
+     "horasExtra": 48
+    },
+    "IMP": {
+     "horasExtra": 20
+    }
+   }
+  },
+  {
+   "id": "maq",
+   "nombre": "+ Nueva máquina",
+   "nuevas": [
+    {
+     "id": "LM-2",
+     "clonDe": "LM-1",
+     "velocidad": "",
+     "fecha": "2027-01"
+    }
+   ]
+  }
+ ]
+}
